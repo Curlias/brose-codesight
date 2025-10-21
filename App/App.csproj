@@ -36,9 +36,15 @@
     <Message Text="Copying dist-modern into $(PublishDir)wwwroot" Importance="high" />
     <ItemGroup>
       <_DistFiles Include="..\dist-modern\**\*.*" />
+      <!-- Also copy the built assets folder directly to wwwroot/assets -->
+      <_DistAssetFiles Include="..\dist-modern\assets\**\*.*" />
     </ItemGroup>
     <Copy SourceFiles="@(_DistFiles)"
           DestinationFiles="@(_DistFiles->'$(PublishDir)wwwroot/%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true" />
+    <MakeDir Directories="$(PublishDir)wwwroot/assets" />
+    <Copy SourceFiles="@(_DistAssetFiles)"
+          DestinationFiles="@(_DistAssetFiles->'$(PublishDir)wwwroot/assets/%(RecursiveDir)%(Filename)%(Extension)')"
           SkipUnchangedFiles="true" />
   </Target>
 </Project>
