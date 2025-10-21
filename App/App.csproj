@@ -12,6 +12,13 @@
     </Content>
   </ItemGroup>
 
+  <!-- Also include built distribution files (dist-modern) so hashed CSS/JS are published -->
+  <ItemGroup>
+    <Content Include="..\dist-modern\**\*.*">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
   <!-- Ensure static files are placed under publish wwwroot folder after publish -->
   <Target Name="CopyStaticContentToWwwroot" AfterTargets="Publish">
     <Message Text="Copying static content from ../src-modern to $(PublishDir)wwwroot" Importance="high" />
