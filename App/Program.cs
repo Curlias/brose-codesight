@@ -8,6 +8,23 @@ var app = builder.Build();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
+// Also serve files from nested wwwroot/wwwroot (some assets were published there)
+try
+{
+	var env = app.Environment;
+	var nested = System.IO.Path.Combine(env.ContentRootPath, "wwwroot", "wwwroot");
+	if (System.IO.Directory.Exists(nested))
+	{
+		var provider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(nested);
+		app.UseStaticFiles(new Microsoft.AspNetCore.Builder.StaticFileOptions
+		{
+			FileProvider = provider,
+			RequestPath = ""
+		});
+	}
+}
+catch { }
+
 app.MapGet("/health", () => Results.Ok("OK"));
 
 app.Run();
