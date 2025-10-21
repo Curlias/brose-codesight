@@ -30,4 +30,15 @@
           DestinationFiles="@(_StaticFiles->'$(PublishDir)wwwroot/%(RecursiveDir)%(Filename)%(Extension)')"
           SkipUnchangedFiles="true" />
   </Target>
+
+  <!-- Copy dist-modern contents into publish wwwroot so hashed assets are served at /assets/... -->
+  <Target Name="CopyDistModernToWwwroot" AfterTargets="Publish">
+    <Message Text="Copying dist-modern into $(PublishDir)wwwroot" Importance="high" />
+    <ItemGroup>
+      <_DistFiles Include="..\dist-modern\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_DistFiles)"
+          DestinationFiles="@(_DistFiles->'$(PublishDir)wwwroot/%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true" />
+  </Target>
 </Project>
