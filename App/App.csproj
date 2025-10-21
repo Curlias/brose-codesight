@@ -4,4 +4,18 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <!-- Copy static site files from repo's src-modern into the publish wwwroot folder -->
+  <ItemGroup>
+    <!-- All files inside src-modern will be included as static content -->
+    <StaticContent Include="..\src-modern\**\*.*" />
+  </ItemGroup>
+
+  <Target Name="CopyStaticContentToPublish" AfterTargets="Publish">
+    <Message Text="Copying static content from ../src-modern to $(PublishDir)wwwroot" Importance="high" />
+    <MakeDir Directories="$(PublishDir)wwwroot" />
+    <Copy SourceFiles="@(StaticContent)" 
+          DestinationFiles="@(StaticContent->'$(PublishDir)wwwroot/%(RecursiveDir)%(Filename)%(Extension)')" 
+          SkipUnchangedFiles="true" />
+  </Target>
 </Project>
