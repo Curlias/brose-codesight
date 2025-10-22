@@ -1,3 +1,13 @@
+/* Colores corporativos de Brose */
+:root {
+  --brose-red: #E30613;
+  --brose-dark-red: #B20510;
+  --brose-black: #1A1A1A;
+  --brose-gray: #6C757D;
+  --brose-light-gray: #F5F5F5;
+  --brose-white: #FFFFFF;
+}
+
 html {
   font-size: 14px;
 }
@@ -9,7 +19,7 @@ html {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--brose-red);
 }
 
 html {
@@ -19,4 +29,46 @@ html {
 
 body {
   margin-bottom: 60px;
+  background-color: var(--brose-light-gray);
+  color: var(--brose-black);
+}
+
+/* Footer */
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+  background-color: var(--brose-white);
+  padding: 0 1.5rem;
+  border-top: 2px solid var(--brose-red);
+}
+
+/* Navbar */
+.navbar-brand {
+  font-size: 1.25rem;
+}
+
+/* Colores de Brose para componentes */
+.text-primary {
+  color: var(--brose-red) !important;
+}
+
+.bg-primary {
+  background-color: var(--brose-red) !important;
+}
+
+.btn-primary {
+  background-color: var(--brose-red);
+  border-color: var(--brose-red);
+}
+
+.btn-primary:hover {
+  background-color: var(--brose-dark-red);
+  border-color: var(--brose-dark-red);
+}
+
+.border-primary {
+  border-color: var(--brose-red) !important;
 }

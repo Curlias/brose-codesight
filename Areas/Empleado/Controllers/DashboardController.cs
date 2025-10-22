@@ -13,51 +13,48 @@ namespace Brose_OnboardingDashboard.Areas.Empleado.Controllers
     // [Authorize(Policy = "RequiereEmpleado")] // Deshabilitado temporalmente para desarrollo
     public class DashboardController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        // private readonly ApplicationDbContext _context;
 
-        public DashboardController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+        // public DashboardController(ApplicationDbContext context)
+        // {
+        //     _context = context;
+        // }
 
         /// <summary>
-        /// Dashboard personal con progreso del empleado
+        /// Dashboard personal con progreso del empleado - VERSIÓN MOCK PARA PRUEBAS DE FRONTEND
         /// </summary>
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var idEmpleado = User.FindFirstValue("IdEmpleado");
-
-            // Si no hay autenticación, usar el primer empleado como demo
-            if (string.IsNullOrEmpty(idEmpleado))
+            // DATOS MOCK - Sin conexión a base de datos
+            
+            // Información del empleado simulada
+            var empleado = new
             {
-                idEmpleado = await _context.Empleados
-                    .Select(e => e.IdEmpleado)
-                    .FirstOrDefaultAsync() ?? "DEMO001";
-            }
-
-            // Obtener información del empleado
-            var empleado = await _context.Empleados
-                .Include(e => e.Puesto)
-                .Include(e => e.Departamento)
-                .Include(e => e.Estado)
-                .Include(e => e.Riesgo)
-                .FirstOrDefaultAsync(e => e.IdEmpleado == idEmpleado);
-
-            if (empleado == null)
-            {
-                return NotFound();
-            }
+                IdEmpleado = "EMP001",
+                Nombre = "Juan",
+                ApellidoPaterno = "Pérez",
+                ApellidoMaterno = "García",
+                Email = "juan.perez@brose.com",
+                FechaIngreso = new DateTime(2024, 9, 15),
+                Puesto = new { Titulo = "Ingeniero de Software" },
+                Departamento = new { Nombre = "Desarrollo" },
+                Estado = new { Nombre = "Activo" },
+                Riesgo = new { Nivel = "Bajo", Color = "#28a745" }
+            };
 
             // Checklist: actividades completadas y pendientes
-            var checklistCompletados = await _context.EstadosChecklist
-                .Where(ec => ec.IdEmpleado == idEmpleado && ec.IdEstado == 3)
-                .CountAsync();
-
-            var checklistPendientes = await _context.EstadosChecklist
-                .Where(ec => ec.IdEmpleado == idEmpleado && ec.IdEstado != 3)
-                .Include(ec => ec.Actividad)
-                .ThenInclude(a => a!.Categoria)
-                .ToListAsync();
+            var checklistCompletados = 15;
+            
+            DateTime? fecha1 = DateTime.Now.AddDays(5);
+            DateTime? fecha2 = DateTime.Now.AddDays(3);
+            DateTime? fecha3 = DateTime.Now.AddDays(7);
+            
+            var checklistPendientes = new List<dynamic>
+            {
+                new { Actividad = new { Descripcion = "Completar perfil de seguridad", Categoria = new { Nombre = "Seguridad" } }, FechaLimite = fecha1 },
+                new { Actividad = new { Descripcion = "Reunión con mentor", Categoria = new { Nombre = "Desarrollo" } }, FechaLimite = fecha2 },
+                new { Actividad = new { Descripcion = "Capacitación de herramientas", Categoria = new { Nombre = "Capacitación" } }, FechaLimite = fecha3 }
+            };
 
             var totalChecklist = checklistCompletados + checklistPendientes.Count;
             var porcentajeChecklist = totalChecklist > 0 
@@ -65,21 +62,23 @@ namespace Brose_OnboardingDashboard.Areas.Empleado.Controllers
                 : 0;
 
             // Tareas de entrenamiento
-            var tareasCompletadas = await _context.TareasEntrenamiento
-                .Where(t => t.Plan!.IdEmpleado == idEmpleado && t.IdEstado == 3)
-                .CountAsync();
-
-            var tareasPendientes = await _context.TareasEntrenamiento
-                .Where(t => t.Plan!.IdEmpleado == idEmpleado && t.IdEstado != 3)
-                .Include(t => t.Estado)
-                .ToListAsync();
+            var tareasCompletadas = 8;
+            
+            DateTime? fechaTarea1 = DateTime.Now.AddDays(10);
+            DateTime? fechaTarea2 = DateTime.Now.AddDays(15);
+            DateTime? fechaTarea3 = DateTime.Now.AddDays(20);
+            
+            var tareasPendientes = new List<dynamic>
+            {
+                new { IdEstado = 2, Descripcion = "Módulo de introducción a C#", Estado = new { Nombre = "En Progreso" }, FechaLimite = fechaTarea1 },
+                new { IdEstado = 1, Descripcion = "Curso de Git y GitHub", Estado = new { Nombre = "Pendiente" }, FechaLimite = fechaTarea2 },
+                new { IdEstado = 2, Descripcion = "Certificación Azure Fundamentals", Estado = new { Nombre = "En Progreso" }, FechaLimite = fechaTarea3 }
+            };
 
             var totalTareas = tareasCompletadas + tareasPendientes.Count;
 
             // Encuestas respondidas
-            var encuestasRespondidas = await _context.RespuestasEncuesta
-                .Where(r => r.IdEmpleado == idEmpleado)
-                .CountAsync();
+            var encuestasRespondidas = 2;
 
             // Días trabajados
             var diasTrabajados = (DateTime.Now - empleado.FechaIngreso).Days;

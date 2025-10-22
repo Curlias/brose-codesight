@@ -59,6 +59,20 @@ namespace Brose_OnboardingDashboard.Data
                 .HasForeignKey(e => e.IdMentor)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Configuración de relación Departamento-Empleado
+            modelBuilder.Entity<Empleado>()
+                .HasOne(e => e.Departamento)
+                .WithMany(d => d.Empleados)
+                .HasForeignKey(e => e.IdDepartamento)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Configuración de relación Departamento.Jefe
+            modelBuilder.Entity<Departamento>()
+                .HasOne(d => d.Jefe)
+                .WithMany()
+                .HasForeignKey(d => d.IdJefe)
+                .OnDelete(DeleteBehavior.Restrict);
+
             // Configuración de índices para mejorar el rendimiento
             modelBuilder.Entity<Usuario>()
                 .HasIndex(u => u.NombreUsuario)
