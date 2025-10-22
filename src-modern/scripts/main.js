@@ -3,6 +3,9 @@
 // ES6+ Modules with Bootstrap 5
 // ==========================================================================
 
+// Import Bootstrap Icons CSS
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 // Import Bootstrap 5 JavaScript components
 import { 
   Alert, 
