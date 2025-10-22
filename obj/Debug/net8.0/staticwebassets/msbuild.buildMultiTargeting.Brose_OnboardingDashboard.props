@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/Brose_OnboardingDashboard.props" />
+</Project>

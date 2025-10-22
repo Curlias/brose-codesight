@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Bienvenido";
+}
+
+<div class="container">
+    <div class="row min-vh-100 align-items-center">
+        <div class="col-lg-6 text-center text-lg-start">
+            <h1 class="display-3 fw-bold mb-4">
+                Bienvenido a
+                <span class="text-primary">Brose Onboarding</span>
+            </h1>
+            <p class="lead mb-4">
+                Sistema integral de gestión de onboarding para nuevos empleados.
+                Administra checklist, planes de entrenamiento, encuestas y seguimiento de riesgo de rotación.
+            </p>
+            <div class="d-grid gap-2 d-md-flex">
+                <a class="btn btn-primary btn-lg px-4" asp-controller="Cuenta" asp-action="Login">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="bi bi-people-fill fs-4"></i>
+                            </div>
+                            <h5 class="card-title">Gestión de Empleados</h5>
+                            <p class="card-text text-muted">
+                                Control completo del proceso de onboarding de nuevos empleados
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon bg-success bg-gradient text-white rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="bi bi-check-square-fill fs-4"></i>
+                            </div>
+                            <h5 class="card-title">Checklist Personalizado</h5>
+                            <p class="card-text text-muted">
+                                Seguimiento de actividades y tareas del proceso de integración
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon bg-info bg-gradient text-white rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="bi bi-book-fill fs-4"></i>
+                            </div>
+                            <h5 class="card-title">Planes de Entrenamiento</h5>
+                            <p class="card-text text-muted">
+                                Capacitación estructurada y seguimiento de progreso
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon bg-warning bg-gradient text-white rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="bi bi-clipboard-data-fill fs-4"></i>
+                            </div>
+                            <h5 class="card-title">Encuestas & Análisis</h5>
+                            <p class="card-text text-muted">
+                                Evaluación de satisfacción y detección de riesgos de rotación
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .feature-icon {
+        transition: transform 0.3s ease;
+    }
+    
+    .card:hover .feature-icon {
+        transform: scale(1.1);
+    }
+</style>
