@@ -131,7 +131,8 @@
             </div>
         </div>
 
-        <div class="col-md-3">
+        @* Riesgo de Rotación - Oculto para empleados *@
+        @* <div class="col-md-3">
             <div class="card shadow-sm h-100 border-@(empleado.Riesgo?.Nivel == "Bajo" ? "success" : (empleado.Riesgo?.Nivel == "Medio" ? "warning" : "danger"))">
                 <div class="card-body text-center">
                     <i class="bi bi-shield-check text-@(empleado.Riesgo?.Nivel == "Bajo" ? "success" : (empleado.Riesgo?.Nivel == "Medio" ? "warning" : "danger"))" 
@@ -140,7 +141,7 @@
                     <p class="text-muted mb-0">Riesgo de Rotación</p>
                 </div>
             </div>
-        </div>
+        </div> *@
     </div>
 
     <!-- Roadmap de Onboarding - Training & onboarding -->

@@ -270,7 +270,11 @@
                                         </td>
                                         <td><span class="badge bg-@riesgoClass">@empleado.Riesgo</span></td>
                                         <td>
-                                            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i></button>
+                                            <a href="/Lider/PerfilEmpleado?perfil=@empleado.Nombre.Replace(" ", "%20")&planta=@empleado.Planta" 
+                                               class="btn btn-sm btn-outline-primary" 
+                                               title="Ver perfil del empleado">
+                                                <i class="bi bi-person-lines-fill"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 }

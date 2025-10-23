@@ -113,10 +113,10 @@ namespace Brose_OnboardingDashboard.Areas.Lider.Controllers
             // Mi equipo - empleados en proceso de onboarding
             var miEquipo = new List<dynamic>
             {
-                new { Nombre = "Ana García", Puesto = "Ingeniero de Calidad", Progreso = 85, DiasOnboarding = 12, Riesgo = "Bajo" },
-                new { Nombre = "Carlos López", Puesto = "Técnico de Producción", Progreso = 60, DiasOnboarding = 8, Riesgo = "Medio" },
-                new { Nombre = "María Rodríguez", Puesto = "Analista de Logística", Progreso = 45, DiasOnboarding = 5, Riesgo = "Bajo" },
-                new { Nombre = "José Martínez", Puesto = "Supervisor de Calidad", Progreso = 90, DiasOnboarding = 15, Riesgo = "Bajo" }
+                new { Nombre = "Ana García", Puesto = "Ingeniero de Calidad", Progreso = 85, DiasOnboarding = 12, Riesgo = "Bajo", Planta = planta },
+                new { Nombre = "Carlos López", Puesto = "Técnico de Producción", Progreso = 60, DiasOnboarding = 8, Riesgo = "Medio", Planta = planta },
+                new { Nombre = "María Rodríguez", Puesto = "Analista de Logística", Progreso = 45, DiasOnboarding = 5, Riesgo = "Bajo", Planta = planta },
+                new { Nombre = "José Martínez", Puesto = "Supervisor de Calidad", Progreso = 90, DiasOnboarding = 15, Riesgo = "Bajo", Planta = planta }
             };
             
             // Score de onboarding - ranking de líderes

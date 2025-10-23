@@ -571,7 +571,7 @@
                         <div class="small text-muted mb-1">Líder</div>
                         <div class="small fw-bold">@emp.Lider</div>
                     </div>
-                    <div class="col-md-2 text-end">
+                    <div class="col-md-1 text-end">
                         <span class="badge-status @badgeClass">@emp.Estado</span>
                         <div class="mt-2">
                             <small class="text-muted">Progreso: @emp.Progreso%</small>
@@ -579,6 +579,13 @@
                                 <div class="progress-fill" style="width: @emp.Progreso%; background: @progressColor;"></div>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-md-1 text-center">
+                        <a href="/RH/PerfilEmpleado?perfil=@emp.Nombre.Replace(" ", "%20")&planta=@emp.Planta.Replace(" ", "%20")" 
+                           class="btn btn-sm btn-outline-danger" 
+                           title="Ver perfil completo">
+                            <i class="bi bi-person-lines-fill"></i>
+                        </a>
                     </div>
                 </div>
             </div>
