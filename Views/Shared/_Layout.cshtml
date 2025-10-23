@@ -32,6 +32,11 @@
                                 <i class="bi bi-person-badge me-1"></i>Dashboard Empleado
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Lider" asp-controller="Dashboard" asp-action="Index">
+                                <i class="bi bi-people-fill me-1"></i>Dashboard Líder
+                            </a>
+                        </li>
                     </ul>
                     
                     <ul class="navbar-nav ms-auto align-items-center">
@@ -40,6 +45,14 @@
                                 <i class="bi bi-info-circle me-1"></i>Modo Demo
                             </span>
                         </li>
+                        @if (ViewBag.Planta != null)
+                        {
+                            <li class="nav-item me-3">
+                                <span class="nav-link text-white">
+                                    <i class="bi bi-building me-1"></i>@ViewBag.Planta
+                                </span>
+                            </li>
+                        }
                         <li class="nav-item">
                             <img src="~/images/brose-logo.png" alt="Brose Logo" style="height: 40px; filter: brightness(0) invert(1);">
                         </li>

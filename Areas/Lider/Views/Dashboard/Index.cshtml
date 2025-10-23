@@ -1,0 +1,550 @@
+@{
+    ViewData["Title"] = "Dashboard de Líder";
+    var liderInfo = ViewBag.Lider;
+    
+    // Seleccionar imagen de planta (puedes cambiar esto según la planta del líder)
+    var plantaImagen = "brose_benito.jpg"; // Default
+}
+
+<div class="container-fluid">
+    <!-- Banner de Bienvenida con imagen de planta -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="welcome-banner-lider position-relative overflow-hidden" 
+                 style="background-image: url('/images/@plantaImagen'); background-size: cover; background-position: center; min-height: 220px; border-radius: 12px;">
+                <!-- Overlay gradiente -->
+                <div class="position-absolute top-0 start-0 w-100 h-100" 
+                     style="background: linear-gradient(135deg, rgba(108, 117, 125, 0.98) 0%, rgba(108, 117, 125, 0.85) 50%, transparent 100%); border-radius: 12px;">
+                </div>
+                
+                <!-- Contenido del banner -->
+                <div class="position-relative h-100 d-flex align-items-center p-4" style="z-index: 2;">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- Contenido principal del líder -->
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <h2 class="text-white fw-bold mb-2">
+                                        <i class="bi bi-award welcome-icon me-2"></i>
+                                        Dashboard de Liderazgo - @liderInfo.Nombre @liderInfo.Apellido
+                                    </h2>
+                                    <p class="text-white-50 mb-0">
+                                        <i class="bi bi-graph-up-arrow me-2"></i>Liderando con excelencia y desarrollando talento
+                                    </p>
+                                </div>
+
+                                <!-- Información en tarjetas pequeñas -->
+                                <div class="row g-2">
+                                    <div class="col-md-4">
+                                        <div class="info-item h-100 d-flex flex-column justify-content-center">
+                                            <label class="text-white-50 small mb-1 d-block">Área</label>
+                                            <p class="text-white fw-bold mb-0">
+                                                <i class="bi bi-briefcase me-1"></i>@liderInfo.Area
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="info-item h-100 d-flex flex-column justify-content-center">
+                                            <label class="text-white-50 small mb-1 d-block">Empleados Totales</label>
+                                            <p class="text-white fw-bold mb-0">
+                                                <i class="bi bi-people me-1"></i>@liderInfo.TotalEmpleados empleados
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="info-item h-100 d-flex flex-column justify-content-center">
+                                            <label class="text-white-50 small mb-1 d-block">En Onboarding</label>
+                                            <p class="text-white fw-bold mb-0">
+                                                <i class="bi bi-person-check me-1"></i>@liderInfo.EnOnboarding en proceso
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Segunda fila de información -->
+                                <div class="row g-2 mt-2">
+                                    <div class="col-md-3">
+                                        <div class="info-item h-100 d-flex flex-column justify-content-center">
+                                            <label class="text-white-50 small mb-1 d-block">Nuevos Ingresos 2025</label>
+                                            <p class="text-white fw-bold mb-0">
+                                                <i class="bi bi-person-plus me-1"></i>@ViewBag.NuevosIngresos.GE (GE)
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="info-item h-100 d-flex flex-column justify-content-center">
+                                            <label class="text-white-50 small mb-1 d-block">Satisfacción</label>
+                                            <p class="text-white fw-bold mb-0">
+                                                <i class="bi bi-star-fill text-warning me-1"></i>@ViewBag.SatisfaccionComparativa.Actual / 5.0
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="info-item h-100 d-flex flex-column justify-content-center">
+                                            <label class="text-white-50 small mb-1 d-block">Posición Ranking</label>
+                                            <p class="text-white fw-bold mb-0">
+                                                <i class="bi bi-trophy-fill text-warning me-1"></i>
+                                                @{
+                                                    var posicionBanner = 0;
+                                                    var rankingBanner = ViewBag.RankingLideres as List<dynamic>;
+                                                    if (rankingBanner != null)
+                                                    {
+                                                        foreach (var liderRank in rankingBanner)
+                                                        {
+                                                            if (liderRank.EsUsuario == true)
+                                                            {
+                                                                posicionBanner = liderRank.Posicion;
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                #@posicionBanner
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="info-item h-100 d-flex flex-column justify-content-center">
+                                            <label class="text-white-50 small mb-1 d-block">Alertas Activas</label>
+                                            <p class="text-white fw-bold mb-0">
+                                                <i class="bi bi-bell-fill text-danger me-1"></i>@ViewBag.AlertasActivas.Count pendientes
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Botón de "Ver alertas activas" en la esquina superior derecha -->
+                <div class="position-absolute top-0 end-0 m-3" style="z-index: 3;">
+                    <button class="btn btn-sm btn-outline-light">
+                        <i class="bi bi-bell-fill me-1"></i>Ver alertas activas
+                        <span class="badge bg-danger ms-1">@ViewBag.AlertasActivas.Count</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Score de Liderazgo -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body d-flex align-items-center justify-content-between p-4">
+                    <div>
+                        <h5 class="mb-1 fw-bold"><i class="bi bi-trophy-fill text-warning me-2"></i>SCORE DE LIDERAZGO</h5>
+                        <p class="text-muted mb-0 small">Basado en métricas de equipo, satisfacción y desarrollo</p>
+                    </div>
+                    <div style="width: 300px;">
+                        <div class="progress" style="height: 30px; border-radius: 15px;">
+                            <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: 92.3%" aria-valuenow="92.3" aria-valuemin="0" aria-valuemax="100">
+                                <strong>92.3%</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Evaluation Process -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="bi bi-clipboard-check me-2"></i>Evaluation of the current Onboarding process</h5>
+                </div>
+                <div class="card-body">
+                    <div class="process-steps">
+                        @foreach (var step in ViewBag.EvaluacionProceso)
+                        {
+                            <div class="process-step">
+                                <div class="step-number">@step.Step</div>
+                                <div class="step-content">
+                                    <h6 class="mb-1">@step.Nombre</h6>
+                                    <div class="rating">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            <i class="bi bi-star-fill @(i <= step.Score ? "text-warning" : "text-muted")"></i>
+                                        }
+                                        <span class="ms-2">@step.Score / 5.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos de Cumplimiento y Satisfacción -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="bi bi-bar-chart me-2"></i>Cumplimiento por Área</h5>
+                </div>
+                <div class="card-body">
+                    @foreach (var area in ViewBag.CumplimientoPorArea)
+                    {
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="fw-semibold">@area.Area</span>
+                                <span class="text-muted">@area.Cumplimiento%</span>
+                            </div>
+                            <div class="progress" style="height: 25px;">
+                                <div class="progress-bar bg-gradient" style="width: @area.Cumplimiento%;" role="progressbar">
+                                    @area.Cumplimiento%
+                                </div>
+                            </div>
+                            <small class="text-muted">Satisfacción: @area.Satisfaccion ⭐</small>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="bi bi-graph-up me-2"></i>Satisfacción Onboarding por Área</h5>
+                </div>
+                <div class="card-body">
+                    @foreach (var area in ViewBag.SatisfaccionPorArea)
+                    {
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="fw-semibold">@area.Area</span>
+                                <span class="text-muted">@area.Promedio / 5.0</span>
+                            </div>
+                            <div class="progress" style="height: 25px;">
+                                <div class="progress-bar bg-success" style="width: @((area.Promedio / 5.0) * 100)%;" role="progressbar">
+                                    @area.Promedio
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mi Equipo en Onboarding -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-people me-2"></i>Mi Equipo en Proceso de Onboarding</h5>
+                    <span class="badge bg-primary">@ViewBag.MiEquipo.Count empleados</span>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Empleado</th>
+                                    <th>Puesto</th>
+                                    <th>Días en Onboarding</th>
+                                    <th>Progreso</th>
+                                    <th>Riesgo</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var empleado in ViewBag.MiEquipo)
+                                {
+                                    var riesgoClass = empleado.Riesgo == "Bajo" ? "success" : (empleado.Riesgo == "Medio" ? "warning" : "danger");
+                                    <tr>
+                                        <td><strong>@empleado.Nombre</strong></td>
+                                        <td>@empleado.Puesto</td>
+                                        <td>@empleado.DiasOnboarding días</td>
+                                        <td>
+                                            <div class="progress" style="height: 20px; width: 150px;">
+                                                <div class="progress-bar" style="width: @empleado.Progreso%;" role="progressbar">
+                                                    @empleado.Progreso%
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-@riesgoClass">@empleado.Riesgo</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i></button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ranking de Líderes y Gamificación -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="bi bi-trophy-fill me-2"></i>Score de Onboarding por Líder - TOP Líderes</h5>
+                    <p class="text-muted small mb-0">Fomenta accountability y competencia sana</p>
+                </div>
+                <div class="card-body">
+                    <div class="ranking-container">
+                        @foreach (var liderRanking in ViewBag.RankingLideres)
+                        {
+                            var isUsuario = liderRanking.EsUsuario == true;
+                            <div class="ranking-item @(isUsuario ? "ranking-highlight" : "")">
+                                <div class="ranking-position">
+                                    @if (liderRanking.Medalla == "gold")
+                                    {
+                                        <i class="bi bi-trophy-fill text-warning" style="font-size: 2rem;"></i>
+                                    }
+                                    else if (liderRanking.Medalla == "silver")
+                                    {
+                                        <i class="bi bi-trophy-fill text-secondary" style="font-size: 2rem;"></i>
+                                    }
+                                    else if (liderRanking.Medalla == "bronze")
+                                    {
+                                        <i class="bi bi-trophy-fill text-bronze" style="font-size: 2rem;"></i>
+                                    }
+                                    else
+                                    {
+                                        <span class="position-number">#@liderRanking.Posicion</span>
+                                    }
+                                </div>
+                                <div class="ranking-info flex-grow-1">
+                                    <h6 class="mb-1">@liderRanking.Nombre @(isUsuario ? "(Tú)" : "")</h6>
+                                    <p class="text-muted small mb-0">@liderRanking.Area</p>
+                                </div>
+                                <div class="ranking-score">
+                                    <h4 class="mb-0 text-primary">@liderRanking.Score</h4>
+                                    <p class="text-muted small mb-0">Score</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="mt-3 p-3 bg-light rounded">
+                        <p class="mb-0"><i class="bi bi-lightbulb-fill text-warning me-2"></i><strong>Gamificación:</strong> Completa hitos y gana medallas. Mantén a tu equipo comprometido para mejorar tu ranking.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alertas Activas -->
+    @if (ViewBag.AlertasActivas.Count > 0)
+    {
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm border-warning">
+                    <div class="card-header bg-warning-light">
+                        <h5 class="mb-0"><i class="bi bi-exclamation-triangle-fill me-2"></i>Alertas Activas de tu Equipo</h5>
+                    </div>
+                    <div class="card-body">
+                        @foreach (var alerta in ViewBag.AlertasActivas)
+                        {
+                            var prioridadClass = alerta.Prioridad == "Alta" ? "danger" : (alerta.Prioridad == "Media" ? "warning" : "info");
+                            <div class="alert alert-@prioridadClass d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>@alerta.Empleado</strong> - @alerta.Tipo
+                                    <span class="text-muted ms-2">(Hace @alerta.Dias días)</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-@prioridadClass">Atender</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    /* Process Steps */
+    .process-steps {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .process-step {
+        flex: 1;
+        min-width: 180px;
+        text-align: center;
+        padding: 1rem;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+        transition: all 0.3s ease;
+    }
+    
+    .process-step:hover {
+        background-color: #e9ecef;
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .step-number {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 50%;
+        background-color: #E30613;
+        color: white;
+        font-weight: bold;
+        margin: 0 auto 0.5rem;
+    }
+    
+    .rating {
+        margin-top: 0.5rem;
+    }
+    
+    /* KPI Icons */
+    .kpi-icon {
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+        border-radius: 12px;
+        margin: 0 auto;
+    }
+    
+    .bg-primary-light {
+        background-color: rgba(227, 6, 19, 0.1);
+    }
+    
+    .bg-success-light {
+        background-color: rgba(40, 167, 69, 0.1);
+    }
+    
+    .bg-warning-light {
+        background-color: rgba(255, 193, 7, 0.1);
+    }
+    
+    .bg-info-light {
+        background-color: rgba(23, 162, 184, 0.1);
+    }
+    
+    /* Ranking */
+    .ranking-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .ranking-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+        transition: all 0.3s ease;
+    }
+    
+    .ranking-item:hover {
+        background-color: #e9ecef;
+        transform: translateX(5px);
+    }
+    
+    .ranking-highlight {
+        background-color: #fff3cd;
+        border: 2px solid #E30613;
+    }
+    
+    .ranking-position {
+        margin-right: 1rem;
+        min-width: 60px;
+        text-align: center;
+    }
+    
+    .position-number {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #6C757D;
+    }
+    
+    .text-bronze {
+        color: #CD7F32;
+    }
+    
+    /* Progress bars con colores Brose */
+    .progress-bar.bg-gradient {
+        background: linear-gradient(135deg, #E30613 0%, #B20510 100%);
+    }
+    
+    /* Cards */
+    .card {
+        border: none;
+        border-radius: 12px;
+    }
+    
+    .card-header {
+        border-bottom: 2px solid #E30613;
+        border-radius: 12px 12px 0 0 !important;
+    }
+    
+    /* Buttons */
+    .btn-primary {
+        background-color: #E30613;
+        border-color: #E30613;
+    }
+    
+    .btn-primary:hover {
+        background-color: #B20510;
+        border-color: #B20510;
+    }
+    
+    /* Table */
+    .table-hover tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    /* Banner de Líder Styles */
+    .welcome-banner-lider {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+    }
+
+    .welcome-banner-lider:hover {
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .info-item {
+        padding: 0.5rem;
+        border-radius: 8px;
+        background-color: rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+        min-height: 60px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .info-item:hover {
+        background-color: rgba(0, 0, 0, 0.25);
+        transform: translateX(5px);
+    }
+    
+    .welcome-icon {
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    @@keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .welcome-banner-lider {
+            min-height: 300px !important;
+        }
+        
+        .info-item {
+            min-height: 50px;
+        }
+    }
+</style>
+

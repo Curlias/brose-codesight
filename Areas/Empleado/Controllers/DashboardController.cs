@@ -36,8 +36,9 @@ namespace Brose_OnboardingDashboard.Areas.Empleado.Controllers
                 ApellidoMaterno = "García",
                 Email = "juan.perez@brose.com",
                 FechaIngreso = new DateTime(2024, 9, 15),
-                Puesto = new { Titulo = "Ingeniero de Software" },
-                Departamento = new { Nombre = "Desarrollo" },
+                Puesto = new { Titulo = "Gerente de Calidad" },
+                Departamento = new { Nombre = "Benito Juarez" }, // Esta es la planta
+                Area = "Control de Calidad", // Área real de trabajo
                 Estado = new { Nombre = "Activo" },
                 Riesgo = new { Nivel = "Bajo", Color = "#28a745" }
             };
@@ -83,7 +84,77 @@ namespace Brose_OnboardingDashboard.Areas.Empleado.Controllers
             // Días trabajados
             var diasTrabajados = (DateTime.Now - empleado.FechaIngreso).Days;
 
+            // Roadmap de Onboarding - Training & onboarding
+            var roadmapOnboarding = new List<dynamic>
+            {
+                new { 
+                    Nombre = "Induction program innovation",
+                    Responsable = "Rodríguez/QUE Q1 2025",
+                    Estado = "Completado", // Completado, En Progreso, Pendiente, Atrasado
+                    Fecha = new DateTime(2024, 9, 15),
+                    DiasDesdeInicio = 0,
+                    Icono = "bi-clipboard-check"
+                },
+                new { 
+                    Nombre = "Skill matrix Prio 1 - NETP 100%",
+                    Responsable = "Rodríguez/QUE Q1 2025",
+                    Estado = "Completado",
+                    Fecha = new DateTime(2024, 9, 20),
+                    DiasDesdeInicio = 5,
+                    Icono = "bi-star"
+                },
+                new { 
+                    Nombre = "Onboarding satisfaction",
+                    Responsable = "García/QUE Q1 2025",
+                    Estado = "En Progreso",
+                    Fecha = new DateTime(2024, 10, 1),
+                    DiasDesdeInicio = 16,
+                    Icono = "bi-emoji-smile"
+                },
+                new { 
+                    Nombre = "Mentorship program FLs & GKLs",
+                    Responsable = "Rodríguez/QUE Q2 2025",
+                    Estado = "En Progreso",
+                    Fecha = new DateTime(2024, 10, 15),
+                    DiasDesdeInicio = 30,
+                    Icono = "bi-people"
+                },
+                new { 
+                    Nombre = "CSRs Effectiveness",
+                    Responsable = "Rodríguez/QUE Q2 2025",
+                    Estado = "Pendiente",
+                    Fecha = new DateTime(2024, 11, 1),
+                    DiasDesdeInicio = 47,
+                    Icono = "bi-graph-up-arrow"
+                },
+                new { 
+                    Nombre = "Priorities technologies definition",
+                    Responsable = "Ortega/QUE Q2 2025",
+                    Estado = "Pendiente",
+                    Fecha = new DateTime(2024, 11, 15),
+                    DiasDesdeInicio = 61,
+                    Icono = "bi-cpu"
+                },
+                new { 
+                    Nombre = "Training plan key positions (LO, IE, QU)",
+                    Responsable = "García/QUE Q2 2025",
+                    Estado = "Pendiente",
+                    Fecha = new DateTime(2024, 12, 1),
+                    DiasDesdeInicio = 77,
+                    Icono = "bi-mortarboard"
+                },
+                new { 
+                    Nombre = "Product and process knowledge training program",
+                    Responsable = "Ortega/QUE Q2 2025",
+                    Estado = "Pendiente",
+                    Fecha = new DateTime(2024, 12, 15),
+                    DiasDesdeInicio = 91,
+                    Icono = "bi-lightbulb"
+                }
+            };
+
             ViewBag.Empleado = empleado;
+            ViewBag.Planta = empleado.Departamento.Nombre; // Para mostrar en el navbar
             ViewBag.ChecklistCompletados = checklistCompletados;
             ViewBag.ChecklistPendientes = checklistPendientes;
             ViewBag.PorcentajeChecklist = Math.Round(porcentajeChecklist, 1);
@@ -92,6 +163,7 @@ namespace Brose_OnboardingDashboard.Areas.Empleado.Controllers
             ViewBag.TotalTareas = totalTareas;
             ViewBag.EncuestasRespondidas = encuestasRespondidas;
             ViewBag.DiasTrabajados = diasTrabajados;
+            ViewBag.RoadmapOnboarding = roadmapOnboarding;
 
             return View();
         }

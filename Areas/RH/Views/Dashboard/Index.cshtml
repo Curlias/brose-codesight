@@ -1,354 +1,279 @@
 @{
     ViewData["Title"] = "Dashboard - Recursos Humanos";
+    var usuarioRH = ViewBag.UsuarioRH;
 }
 
-<div class="container-fluid">
+<div class="container-fluid px-4">
+    <!-- Banner superior -->
     <div class="row mb-4">
         <div class="col-12">
-            <h2 class="fw-bold text-primary">
-                <i class="bi bi-speedometer2 me-2"></i>
-                Dashboard de Recursos Humanos
-            </h2>
-            <p class="text-muted">KPIs y métricas de onboarding</p>
-        </div>
-    </div>
-
-    <!-- Tarjetas de KPIs principales -->
-    <div class="row g-3 mb-4">
-        <div class="col-md-3">
-            <div class="card bg-primary text-white shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="card-subtitle mb-2">Empleados Activos</h6>
-                            <h2 class="mb-0 fw-bold">@ViewBag.TotalEmpleadosActivos</h2>
+            <div class="card bg-danger text-white shadow">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2 class="fw-bold mb-2">
+                                <i class="bi bi-gear-wide-connected me-2"></i>
+                                Panel de Administración - @usuarioRH.Nombre
+                            </h2>
+                            <p class="mb-0 opacity-75">Gestión integral del proceso de onboarding empresarial</p>
                         </div>
-                        <i class="bi bi-people-fill" style="font-size: 3rem; opacity: 0.3;"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card bg-success text-white shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="card-subtitle mb-2">Checklist Completado</h6>
-                            <h2 class="mb-0 fw-bold">@ViewBag.PorcentajeChecklist%</h2>
+                        <div class="col-md-4 text-end">
+                            <div class="text-white">
+                                <h5 class="mb-1">@usuarioRH.TotalEmpleados</h5>
+                                <small>Empleados Totales</small>
+                            </div>
                         </div>
-                        <i class="bi bi-check-circle-fill" style="font-size: 3rem; opacity: 0.3;"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card bg-warning text-white shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="card-subtitle mb-2">Tareas Pendientes</h6>
-                            <h2 class="mb-0 fw-bold">@ViewBag.TareasEntrenamientoPendientes</h2>
-                        </div>
-                        <i class="bi bi-clock-fill" style="font-size: 3rem; opacity: 0.3;"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card bg-info text-white shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="card-subtitle mb-2">Encuestas Activas</h6>
-                            <h2 class="mb-0 fw-bold">@ViewBag.EncuestasActivas</h2>
-                        </div>
-                        <i class="bi bi-clipboard-check-fill" style="font-size: 3rem; opacity: 0.3;"></i>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row g-3">
-        <!-- Gráfico de Nuevos Ingresos -->
-        <div class="col-md-6">
+    <!-- Nuevos Ingresos 2025 -->
+    <div class="row mb-4">
+        <div class="col-12">
             <div class="card shadow-sm">
-                <div class="card-header bg-white">
-                    <h5 class="mb-0"><i class="bi bi-graph-up me-2"></i>Nuevos Ingresos por Mes</h5>
-                </div>
                 <div class="card-body">
-                    <div class="chart-container">
-                        @{
-                            var ingresosList = (List<dynamic>)ViewBag.NuevosIngresosPorMes;
-                            var maxIngresosValue = ingresosList.Any() ? ingresosList.Max(x => (int)x.Cantidad) : 1;
-                        }
-                        @foreach (var item in ingresosList)
-                        {
-                            var altura = maxIngresosValue > 0 ? (item.Cantidad * 100 / maxIngresosValue) : 0;
-                            <div class="chart-bar-wrapper">
-                                <div class="chart-bar" style="height: @(altura)%;" 
-                                     title="@item.Mes: @item.Cantidad empleados">
-                                    <span class="chart-value">@item.Cantidad</span>
-                                </div>
-                                <span class="chart-label">@item.Mes</span>
+                    <h5 class="card-title fw-bold mb-4">
+                        <i class="bi bi-calendar-plus text-primary me-2"></i>
+                        NUEVOS INGRESOS 2025
+                    </h5>
+                    <div class="row g-3 text-center">
+                        <div class="col-md-2">
+                            <div class="p-3 bg-light rounded">
+                                <h2 class="mb-1 text-primary fw-bold">@ViewBag.NuevosIngresos2025.GE</h2>
+                                <p class="text-muted small mb-0">GE</p>
                             </div>
-                        }
+                        </div>
+                        <div class="col-md-2">
+                            <div class="p-3 bg-light rounded">
+                                <h2 class="mb-1 text-success fw-bold">@ViewBag.NuevosIngresos2025.GKL</h2>
+                                <p class="text-muted small mb-0">GKL</p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="p-3 bg-light rounded">
+                                <h2 class="mb-1 text-info fw-bold">@ViewBag.NuevosIngresos2025.FL</h2>
+                                <p class="text-muted small mb-0">FL</p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="p-3 bg-light rounded">
+                                <h2 class="mb-1 text-warning fw-bold">@ViewBag.NuevosIngresos2025.WS</h2>
+                                <p class="text-muted small mb-0">WS</p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="p-3 bg-light rounded">
+                                <h2 class="mb-1 text-secondary fw-bold">@ViewBag.NuevosIngresos2025.ATS</h2>
+                                <p class="text-muted small mb-0">ATS</p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="p-3 bg-danger text-white rounded">
+                                <h2 class="mb-1 fw-bold">@ViewBag.NuevosIngresos2025.Total</h2>
+                                <p class="small mb-0">TOTAL</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Gráfico de Distribución de Riesgo -->
-        <div class="col-md-6">
+    <!-- Totales por período -->
+    <div class="row mb-4">
+        <div class="col-12">
             <div class="card shadow-sm">
-                <div class="card-header bg-white">
-                    <h5 class="mb-0"><i class="bi bi-pie-chart me-2"></i>Distribución de Riesgo de Rotación</h5>
-                </div>
                 <div class="card-body">
-                    @{
-                        var riesgoList = (List<dynamic>)ViewBag.DistribucionRiesgo;
-                        var totalRiesgo = riesgoList.Any() ? riesgoList.Sum(x => (int)x.Cantidad) : 1;
-                    }
-                    @foreach (var item in riesgoList)
-                    {
-                        var porcentaje = totalRiesgo > 0 ? (item.Cantidad * 100.0 / totalRiesgo) : 0;
-                        var colorClass = item.Nivel == "Bajo" ? "success" : (item.Nivel == "Medio" ? "warning" : "danger");
-                        
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between mb-1">
-                                <span class="fw-bold">@item.Nivel</span>
-                                <span>@item.Cantidad empleados (@Math.Round(porcentaje, 1)%)</span>
-                            </div>
-                            <div class="progress" style="height: 25px;">
-                                <div class="progress-bar bg-@colorClass" role="progressbar" 
-                                     style="width: @porcentaje%" aria-valuenow="@porcentaje" 
-                                     aria-valuemin="0" aria-valuemax="100">
-                                </div>
-                            </div>
-                        </div>
-                    }
+                    <h5 class="card-title fw-bold mb-4">
+                        <i class="bi bi-table text-primary me-2"></i>
+                        TOTALES DE DATOS USUARIO POR PERIODO
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Tipos de empleados</th>
+                                    <th class="text-center">NUEVO INGRESO</th>
+                                    <th class="text-center">CAMBIO DE POSICIÓN</th>
+                                    <th class="text-center">% SATISFACCIÓN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.TiposEmpleados != null)
+                                {
+                                    foreach (var tipo in ViewBag.TiposEmpleados)
+                                    {
+                                        <tr>
+                                            <td><strong>@tipo.Tipo</strong></td>
+                                            <td class="text-center">
+                                                <span class="badge bg-primary">@tipo.NuevoIngreso</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="badge bg-info">@tipo.CambioPosicion</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="fw-bold">@tipo.Satisfaccion / 5.0</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Gráfico de Satisfacción -->
-        <div class="col-md-12">
+
+    <!-- Evaluation of the current Onboarding process -->
+    <div class="row mb-4">
+        <div class="col-12">
             <div class="card shadow-sm">
-                <div class="card-header bg-white">
-                    <h5 class="mb-0"><i class="bi bi-star-fill me-2"></i>Promedio de Satisfacción por Tipo de Encuesta</h5>
-                </div>
                 <div class="card-body">
-                    <div class="row">
-                        @foreach (var item in ViewBag.PromedioSatisfaccion)
+                    <h5 class="card-title fw-bold mb-4">
+                        <i class="bi bi-diagram-3 text-primary me-2"></i>
+                        Evaluation of the current Onboarding process
+                    </h5>
+                    <div class="row g-3">
+                        @if (ViewBag.EvaluacionProceso != null)
                         {
-                            var estrellas = Math.Round(item.Promedio, 1);
-                            <div class="col-md-3">
-                                <div class="text-center p-3 border rounded">
-                                    <h6 class="text-muted">@item.TipoEncuesta</h6>
-                                    <div class="stars mb-2">
-                                        @for (int i = 1; i <= 5; i++)
-                                        {
-                                            if (i <= estrellas)
-                                            {
-                                                <i class="bi bi-star-fill text-warning"></i>
-                                            }
-                                            else
-                                            {
-                                                <i class="bi bi-star text-warning"></i>
-                                            }
-                                        }
+                            foreach (var paso in ViewBag.EvaluacionProceso)
+                            {
+                                <div class="col-md-2">
+                                    <div class="text-center p-3 border rounded h-100">
+                                        <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-2" 
+                                             style="width: 50px; height: 50px;">
+                                            <strong>@paso.Paso</strong>
+                                        </div>
+                                        <p class="small mb-2">@paso.Nombre</p>
+                                        <h5 class="text-success fw-bold mb-0">@paso.Porcentaje%</h5>
                                     </div>
-                                    <h4 class="mb-0 text-primary">@estrellas.ToString("F1")</h4>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-4">
+                        <i class="bi bi-bar-chart-fill text-success me-2"></i>
+                        Cumplimiento por Área
+                    </h5>
+                    <div style="max-height: 400px; overflow-y: auto;">
+                        @if (ViewBag.CumplimientoPorArea != null)
+                        {
+                            foreach (var area in ViewBag.CumplimientoPorArea)
+                            {
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span class="small fw-bold">@area.Area</span>
+                                        <span class="small">@area.Actual%</span>
+                                    </div>
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar bg-success" role="progressbar" 
+                                             style="width: @area.Actual%"></div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-4">
+                        <i class="bi bi-emoji-smile-fill text-warning me-2"></i>
+                        Satisfacción por Área
+                    </h5>
+                    <div style="max-height: 400px; overflow-y: auto;">
+                        @if (ViewBag.SatisfaccionPorArea != null)
+                        {
+                            foreach (var area in ViewBag.SatisfaccionPorArea)
+                            {
+                                var colorClass = area.Satisfaccion >= 4.5 ? "success" : area.Satisfaccion >= 4.0 ? "info" : area.Satisfaccion >= 3.5 ? "warning" : "danger";
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span class="small fw-bold">@area.Area</span>
+                                        <span class="badge bg-@colorClass">@area.Satisfaccion</span>
+                                    </div>
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar bg-@colorClass" role="progressbar" 
+                                             style="width: @(area.Satisfaccion * 20)%"></div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Score y Gamificación -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-4">
+                        <i class="bi bi-trophy-fill text-warning me-2"></i>
+                        TOP Líderes
+                    </h5>
+                    @if (ViewBag.ScorePorLider != null)
+                    {
+                        foreach (var lider in ViewBag.ScorePorLider)
+                        {
+                            <div class="d-flex justify-content-between align-items-center mb-3 p-2 border rounded">
+                                <div>
+                                    <span class="badge bg-warning me-2">#@lider.Posicion</span>
+                                    <strong>@lider.Nombre</strong>
+                                    <small class="text-muted d-block">@lider.Area</small>
+                                </div>
+                                <h5 class="mb-0 text-warning">@lider.Score%</h5>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-4">
+                        <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>
+                        Alertas Activas
+                    </h5>
+                    @if (ViewBag.AlertasActivas != null)
+                    {
+                        foreach (var alerta in ViewBag.AlertasActivas)
+                        {
+                            var prioridadClass = alerta.Prioridad == "Alta" ? "danger" : alerta.Prioridad == "Media" ? "warning" : "info";
+                            <div class="mb-3 p-2 border rounded">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <strong>@alerta.Tipo</strong>
+                                        <small class="text-muted d-block">Área: @alerta.Area</small>
+                                    </div>
+                                    <span class="badge bg-@prioridadClass">@alerta.Prioridad</span>
                                 </div>
                             </div>
                         }
-                    </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<style>
-    /* Cards mejoradas */
-    .card {
-        border: none !important;
-        border-radius: 12px !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15) !important;
-    }
-
-    .card-header {
-        background-color: #fff !important;
-        border-bottom: 2px solid #f0f0f0 !important;
-        padding: 1.25rem !important;
-        font-weight: 600 !important;
-        border-radius: 12px 12px 0 0 !important;
-    }
-
-    .card-body {
-        padding: 1.5rem !important;
-    }
-
-    /* KPI Cards con colores de Brose */
-    .bg-primary {
-        background: linear-gradient(135deg, #E30613 0%, #B20510 100%) !important;
-    }
-
-    .bg-success {
-        background: linear-gradient(135deg, #6C757D 0%, #495057 100%) !important;
-    }
-
-    .bg-warning {
-        background: linear-gradient(135deg, #1A1A1A 0%, #000000 100%) !important;
-    }
-
-    .bg-info {
-        background: linear-gradient(135deg, #DC3545 0%, #E30613 100%) !important;
-    }
-
-    /* Gráficos de barras con color Brose */
-    .chart-container {
-        display: flex;
-        justify-content: space-around;
-        align-items: flex-end;
-        height: 280px;
-        padding: 30px 15px 10px;
-        background-color: #F5F5F5;
-        border-radius: 8px;
-        margin: 10px 0;
-    }
-
-    .chart-bar-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        flex: 1;
-        margin: 0 3px;
-        min-width: 40px;
-    }
-
-    .chart-bar {
-        width: 100%;
-        max-width: 50px;
-        background: linear-gradient(to top, #E30613, #FF4757);
-        border-radius: 8px 8px 0 0;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: flex-start;
-        justify-content: center;
-        padding-top: 8px;
-        min-height: 40px;
-        box-shadow: 0 2px 4px rgba(227, 6, 19, 0.3);
-        position: relative;
-    }
-
-    .chart-bar:hover {
-        opacity: 0.9;
-        transform: translateY(-8px);
-        box-shadow: 0 4px 12px rgba(227, 6, 19, 0.5);
-    }
-
-    .chart-value {
-        color: white;
-        font-weight: 700;
-        font-size: 0.85rem;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    }
-
-    .chart-label {
-        margin-top: 12px;
-        font-size: 0.75rem;
-        color: #1A1A1A;
-        font-weight: 500;
-        text-align: center;
-        max-width: 80px;
-    }
-
-    /* Progress bars con colores Brose */
-    .progress {
-        border-radius: 8px !important;
-        background-color: #E9ECEF !important;
-        overflow: hidden;
-    }
-
-    .progress-bar {
-        border-radius: 8px !important;
-        transition: width 0.6s ease;
-    }
-
-    .progress-bar.bg-success {
-        background-color: #6C757D !important;
-    }
-
-    .progress-bar.bg-warning {
-        background-color: #E30613 !important;
-    }
-
-    .progress-bar.bg-danger {
-        background-color: #B20510 !important;
-    }
-
-    /* Estrellas con color Brose */
-    .stars {
-        font-size: 1.8rem;
-        letter-spacing: 2px;
-    }
-
-    .stars i {
-        transition: transform 0.2s;
-    }
-
-    .stars .text-warning {
-        color: #E30613 !important;
-    }
-    }
-
-    .stars i:hover {
-        transform: scale(1.2);
-    }
-
-    /* Iconos grandes en cards KPI */
-    .card-body i {
-        opacity: 0.2;
-    }
-
-    /* Títulos */
-    h2.fw-bold {
-        font-size: 2rem;
-        margin-bottom: 0.5rem;
-    }
-
-    h5 i, h2 i {
-        color: #667eea;
-    }
-
-    /* Bordes redondeados generales */
-    .rounded {
-        border-radius: 8px !important;
-    }
-
-    /* Responsive */
-    @@media (max-width: 768px) {
-        .chart-container {
-            height: 200px;
-            padding: 20px 10px 5px;
-        }
-
-        .chart-bar {
-            max-width: 35px;
-        }
-
-        .chart-label {
-            font-size: 0.65rem;
-        }
-    }
-</style>
