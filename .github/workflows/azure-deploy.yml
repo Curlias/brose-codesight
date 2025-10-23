@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: brose-dashboard
+  AZURE_WEBAPP_NAME: brose-dashboard-gahdfwhuh7cvakaa
   AZURE_WEBAPP_PACKAGE_PATH: '.'
   DOTNET_VERSION: '8.0.x'
 
