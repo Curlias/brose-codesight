@@ -1,0 +1,649 @@
+@{
+    ViewData["Title"] = "Gestión de Empleados";
+}
+
+<style>
+    .sidebar-rh {
+        position: fixed;
+        top: 75px;
+        left: 0;
+        bottom: 0;
+        width: 240px;
+        background: #fff;
+        overflow-y: auto;
+        z-index: 100;
+        box-shadow: 2px 0 15px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease;
+        border-right: 1px solid #E5E5E5;
+    }
+
+    .sidebar-rh::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .sidebar-rh::-webkit-scrollbar-track {
+        background: #f5f5f5;
+    }
+
+    .sidebar-rh::-webkit-scrollbar-thumb {
+        background: #E30613;
+        border-radius: 2px;
+    }
+
+    .sidebar-rh .nav-section {
+        padding: 10px 0;
+        border-bottom: 1px solid #F0F0F0;
+    }
+
+    .sidebar-rh .nav-section-title {
+        color: #6C757D;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 8px 20px;
+        margin-bottom: 5px;
+    }
+
+    .sidebar-rh .nav-link {
+        color: #1A1A1A;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border-left: 3px solid transparent;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .sidebar-rh .nav-link:hover {
+        background: #FFF5F5;
+        color: #E30613;
+        border-left-color: #E30613;
+    }
+
+    .sidebar-rh .nav-link.active {
+        background: #FFF0F0;
+        color: #E30613;
+        border-left-color: #E30613;
+        font-weight: 600;
+    }
+
+    .sidebar-rh .nav-link i {
+        margin-right: 10px;
+        font-size: 15px;
+        width: 18px;
+        text-align: center;
+    }
+
+    .sidebar-rh .badge {
+        margin-left: auto;
+        font-size: 9px;
+        padding: 2px 6px;
+    }
+
+    .main-content-rh {
+        margin-left: 240px;
+        padding: 20px 30px;
+        transition: margin-left 0.3s ease;
+        min-height: calc(100vh - 75px);
+        background: #F8F9FA;
+    }
+
+    .toggle-sidebar {
+        position: fixed;
+        top: 85px;
+        left: 240px;
+        z-index: 101;
+        background: #E30613;
+        color: white;
+        border: none;
+        width: 28px;
+        height: 28px;
+        border-radius: 0 4px 4px 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .toggle-sidebar:hover {
+        background: #B20510;
+    }
+
+    .sidebar-collapsed .sidebar-rh {
+        transform: translateX(-240px);
+    }
+
+    .sidebar-collapsed .main-content-rh {
+        margin-left: 0;
+    }
+
+    .sidebar-collapsed .toggle-sidebar {
+        left: 0;
+    }
+
+    .search-bar {
+        background: white;
+        border-radius: 8px;
+        padding: 15px 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+    }
+
+    .filter-section {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+    }
+
+    .filter-section .filter-title {
+        font-weight: 600;
+        font-size: 14px;
+        color: #1A1A1A;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+    .filter-section .filter-title i {
+        color: #E30613;
+        margin-right: 8px;
+    }
+
+    .employee-card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+    }
+
+    .employee-card:hover {
+        box-shadow: 0 4px 16px rgba(227,6,19,0.1);
+        border-left-color: #E30613;
+        transform: translateX(5px);
+    }
+
+    .employee-name {
+        font-weight: 600;
+        font-size: 16px;
+        color: #1A1A1A;
+        margin-bottom: 5px;
+    }
+
+    .employee-info {
+        font-size: 13px;
+        color: #6C757D;
+        margin-bottom: 3px;
+    }
+
+    .progress-bar-custom {
+        height: 8px;
+        border-radius: 4px;
+        background: #E5E5E5;
+        overflow: hidden;
+        margin-top: 10px;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #E30613 0%, #FF5252 100%);
+        transition: width 0.3s ease;
+    }
+
+    .badge-status {
+        font-size: 11px;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-weight: 600;
+    }
+
+    .badge-activo {
+        background: #D4EDDA;
+        color: #155724;
+    }
+
+    .badge-onboarding {
+        background: #FFF3CD;
+        color: #856404;
+    }
+
+    .badge-nuevo {
+        background: #D1ECF1;
+        color: #0C5460;
+    }
+
+    @@media (max-width: 992px) {
+        .sidebar-rh {
+            transform: translateX(-240px);
+        }
+        .main-content-rh {
+            margin-left: 0;
+        }
+        .toggle-sidebar {
+            left: 0;
+        }
+        .sidebar-collapsed .sidebar-rh {
+            transform: translateX(0);
+        }
+        .sidebar-collapsed .toggle-sidebar {
+            left: 240px;
+        }
+    }
+</style>
+
+<!-- Botón para toggle del sidebar -->
+<button class="toggle-sidebar" onclick="toggleSidebar()">
+    <i class="bi bi-list"></i>
+</button>
+
+<!-- Sidebar de navegación -->
+<div class="sidebar-rh">
+    <!-- Dashboard Principal -->
+    <div class="nav-section">
+        <div class="nav-section-title">Dashboard</div>
+        <a href="/RH/Dashboard" class="nav-link">
+            <i class="bi bi-house-door"></i>
+            <span>Vista General</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-graph-up-arrow"></i>
+            <span>Métricas</span>
+        </a>
+    </div>
+
+    <!-- Gestión de Empleados -->
+    <div class="nav-section">
+        <div class="nav-section-title">Empleados</div>
+        <a href="/RH/Empleados" class="nav-link active">
+            <i class="bi bi-people"></i>
+            <span>Todos los Empleados</span>
+            <span class="badge bg-danger">@ViewBag.TotalEmpleados</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-person-plus"></i>
+            <span>Nuevos Ingresos</span>
+            <span class="badge bg-success">35</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-arrow-left-right"></i>
+            <span>Cambios de Posición</span>
+        </a>
+    </div>
+
+    <!-- Onboarding -->
+    <div class="nav-section">
+        <div class="nav-section-title">Onboarding</div>
+        <a href="#" class="nav-link">
+            <i class="bi bi-list-check"></i>
+            <span>Checklists</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-book"></i>
+            <span>Planes de Entrenamiento</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-clipboard-check"></i>
+            <span>Tareas Pendientes</span>
+            <span class="badge bg-warning text-dark">32</span>
+        </a>
+    </div>
+
+    <!-- Evaluación -->
+    <div class="nav-section">
+        <div class="nav-section-title">Evaluación</div>
+        <a href="#" class="nav-link">
+            <i class="bi bi-chat-square-quote"></i>
+            <span>Encuestas</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-emoji-smile"></i>
+            <span>Satisfacción</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-star"></i>
+            <span>Evaluaciones</span>
+        </a>
+    </div>
+
+    <!-- Liderazgo -->
+    <div class="nav-section">
+        <div class="nav-section-title">Liderazgo</div>
+        <a href="#" class="nav-link">
+            <i class="bi bi-person-badge"></i>
+            <span>Gestión de Líderes</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-trophy"></i>
+            <span>Ranking</span>
+        </a>
+    </div>
+
+    <!-- Reportes -->
+    <div class="nav-section">
+        <div class="nav-section-title">Reportes</div>
+        <a href="#" class="nav-link">
+            <i class="bi bi-file-earmark-bar-graph"></i>
+            <span>Reportes Generales</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-exclamation-triangle"></i>
+            <span>Riesgos de Rotación</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-download"></i>
+            <span>Exportar Datos</span>
+        </a>
+    </div>
+
+    <!-- Configuración -->
+    <div class="nav-section">
+        <div class="nav-section-title">Sistema</div>
+        <a href="#" class="nav-link">
+            <i class="bi bi-gear"></i>
+            <span>Configuración</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-shield-lock"></i>
+            <span>Roles y Permisos</span>
+        </a>
+    </div>
+</div>
+
+<!-- Contenido principal -->
+<div class="main-content-rh">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="fw-bold mb-1" style="color: #1A1A1A;">
+                <i class="bi bi-people-fill text-danger me-2"></i>
+                Gestión de Empleados
+            </h2>
+            <p class="text-muted mb-0">Listado completo de todos los empleados en el sistema</p>
+        </div>
+    </div>
+
+    <!-- Buscador -->
+    <div class="search-bar">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0">
+                        <i class="bi bi-search text-muted"></i>
+                    </span>
+                    <input type="text" id="searchInput" class="form-control border-start-0 ps-0" 
+                           placeholder="Buscar por nombre, puesto, departamento..." 
+                           onkeyup="filterEmployees()">
+                </div>
+            </div>
+            <div class="col-md-4 text-end">
+                <button class="btn btn-outline-danger btn-sm" onclick="clearFilters()">
+                    <i class="bi bi-x-circle me-1"></i>
+                    Limpiar Filtros
+                </button>
+                <button class="btn btn-danger btn-sm ms-2">
+                    <i class="bi bi-download me-1"></i>
+                    Exportar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de Filtros -->
+    <div class="filter-section">
+        <div class="filter-title">
+            <i class="bi bi-funnel-fill"></i>
+            Filtros Avanzados
+        </div>
+        <div class="row g-3">
+            <div class="col-md-2">
+                <label class="form-label small fw-bold text-muted">Planta</label>
+                <select class="form-select form-select-sm" id="filterPlanta" onchange="filterEmployees()">
+                    @foreach (var planta in ViewBag.Plantas)
+                    {
+                        <option>@planta</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small fw-bold text-muted">Área</label>
+                <select class="form-select form-select-sm" id="filterArea" onchange="filterEmployees()">
+                    @foreach (var area in ViewBag.Areas)
+                    {
+                        <option>@area</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small fw-bold text-muted">Departamento</label>
+                <select class="form-select form-select-sm" id="filterDepartamento" onchange="filterEmployees()">
+                    @foreach (var depto in ViewBag.Departamentos)
+                    {
+                        <option>@depto</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small fw-bold text-muted">Estado</label>
+                <select class="form-select form-select-sm" id="filterEstado" onchange="filterEmployees()">
+                    @foreach (var estado in ViewBag.Estados)
+                    {
+                        <option>@estado</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small fw-bold text-muted">Líder</label>
+                <select class="form-select form-select-sm" id="filterLider" onchange="filterEmployees()">
+                    @foreach (var lider in ViewBag.Lideres)
+                    {
+                        <option>@lider</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estadísticas -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="rounded-circle bg-danger bg-opacity-10 p-3">
+                                <i class="bi bi-people-fill text-danger fs-4"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-muted small mb-1">Total Empleados</h6>
+                            <h3 class="mb-0 fw-bold" id="totalCount">@ViewBag.TotalEmpleados</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="rounded-circle bg-success bg-opacity-10 p-3">
+                                <i class="bi bi-check-circle-fill text-success fs-4"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-muted small mb-1">Activos</h6>
+                            <h3 class="mb-0 fw-bold" id="activosCount">10</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="rounded-circle bg-warning bg-opacity-10 p-3">
+                                <i class="bi bi-clock-fill text-warning fs-4"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-muted small mb-1">En Onboarding</h6>
+                            <h3 class="mb-0 fw-bold" id="onboardingCount">7</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="rounded-circle bg-info bg-opacity-10 p-3">
+                                <i class="bi bi-star-fill text-info fs-4"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-muted small mb-1">Nuevos Ingresos</h6>
+                            <h3 class="mb-0 fw-bold" id="nuevosCount">3</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Listado de Empleados -->
+    <div id="employeeList">
+        @foreach (var emp in ViewBag.Empleados)
+        {
+            var badgeClass = emp.Estado == "Activo" ? "badge-activo" : emp.Estado == "En Onboarding" ? "badge-onboarding" : "badge-nuevo";
+            var progressColor = emp.Progreso >= 80 ? "#28A745" : emp.Progreso >= 50 ? "#FFC107" : "#DC3545";
+            
+            <div class="employee-card" 
+                 data-nombre="@emp.Nombre" 
+                 data-puesto="@emp.Puesto" 
+                 data-area="@emp.Area" 
+                 data-departamento="@emp.Departamento" 
+                 data-planta="@emp.Planta" 
+                 data-lider="@emp.Lider" 
+                 data-estado="@emp.Estado">
+                <div class="row align-items-center">
+                    <div class="col-md-4">
+                        <div class="employee-name">@emp.Nombre</div>
+                        <div class="employee-info">
+                            <i class="bi bi-briefcase me-1"></i>@emp.Puesto
+                        </div>
+                        <div class="employee-info">
+                            <i class="bi bi-building me-1"></i>@emp.Departamento
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="small text-muted mb-1">Área</div>
+                        <span class="badge bg-primary">@emp.Area</span>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="small text-muted mb-1">Planta</div>
+                        <div class="small fw-bold">@emp.Planta</div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="small text-muted mb-1">Líder</div>
+                        <div class="small fw-bold">@emp.Lider</div>
+                    </div>
+                    <div class="col-md-2 text-end">
+                        <span class="badge-status @badgeClass">@emp.Estado</span>
+                        <div class="mt-2">
+                            <small class="text-muted">Progreso: @emp.Progreso%</small>
+                            <div class="progress-bar-custom">
+                                <div class="progress-fill" style="width: @emp.Progreso%; background: @progressColor;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    function toggleSidebar() {
+        document.body.classList.toggle('sidebar-collapsed');
+        localStorage.setItem('sidebarCollapsed', document.body.classList.contains('sidebar-collapsed'));
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        if (isCollapsed) {
+            document.body.classList.add('sidebar-collapsed');
+        }
+    });
+
+    function filterEmployees() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const filterPlanta = document.getElementById('filterPlanta').value;
+        const filterArea = document.getElementById('filterArea').value;
+        const filterDepartamento = document.getElementById('filterDepartamento').value;
+        const filterEstado = document.getElementById('filterEstado').value;
+        const filterLider = document.getElementById('filterLider').value;
+
+        const cards = document.querySelectorAll('.employee-card');
+        let visibleCount = 0;
+        let activosCount = 0;
+        let onboardingCount = 0;
+        let nuevosCount = 0;
+
+        cards.forEach(card => {
+            const nombre = card.dataset.nombre.toLowerCase();
+            const puesto = card.dataset.puesto.toLowerCase();
+            const area = card.dataset.area;
+            const departamento = card.dataset.departamento;
+            const planta = card.dataset.planta;
+            const lider = card.dataset.lider;
+            const estado = card.dataset.estado;
+
+            const matchSearch = nombre.includes(searchTerm) || puesto.includes(searchTerm) || departamento.toLowerCase().includes(searchTerm);
+            const matchPlanta = filterPlanta === 'Todas' || planta === filterPlanta;
+            const matchArea = filterArea === 'Todas' || area === filterArea;
+            const matchDepartamento = filterDepartamento === 'Todos' || departamento === filterDepartamento;
+            const matchEstado = filterEstado === 'Todos' || estado === filterEstado;
+            const matchLider = filterLider === 'Todos' || lider === filterLider;
+
+            if (matchSearch && matchPlanta && matchArea && matchDepartamento && matchEstado && matchLider) {
+                card.style.display = 'block';
+                visibleCount++;
+                
+                if (estado === 'Activo') activosCount++;
+                else if (estado === 'En Onboarding') onboardingCount++;
+                else if (estado === 'Nuevo Ingreso') nuevosCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        document.getElementById('totalCount').textContent = visibleCount;
+        document.getElementById('activosCount').textContent = activosCount;
+        document.getElementById('onboardingCount').textContent = onboardingCount;
+        document.getElementById('nuevosCount').textContent = nuevosCount;
+    }
+
+    function clearFilters() {
+        document.getElementById('searchInput').value = '';
+        document.getElementById('filterPlanta').selectedIndex = 0;
+        document.getElementById('filterArea').selectedIndex = 0;
+        document.getElementById('filterDepartamento').selectedIndex = 0;
+        document.getElementById('filterEstado').selectedIndex = 0;
+        document.getElementById('filterLider').selectedIndex = 0;
+        filterEmployees();
+    }
+</script>

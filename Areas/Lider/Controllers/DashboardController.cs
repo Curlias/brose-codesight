@@ -7,7 +7,55 @@ namespace Brose_OnboardingDashboard.Areas.Lider.Controllers
     {
         public IActionResult Index()
         {
+            // Obtener perfil del query string
+            var nombrePerfil = Request.Query["perfil"].ToString();
+            
             // Datos mock para el Dashboard de Líder
+            dynamic lider;
+            string planta;
+            
+            // Adaptar datos según el perfil
+            if (nombrePerfil == "María González")
+            {
+                lider = new
+                {
+                    Nombre = "María",
+                    Apellido = "González",
+                    Area = "Ingeniería",
+                    TotalEmpleados = 15,
+                    EnOnboarding = 4,
+                    Planta = "Benito Juárez"
+                };
+                planta = "Benito Juárez";
+            }
+            else if (nombrePerfil == "Tania Rodríguez")
+            {
+                // Tania como líder de becarios
+                lider = new
+                {
+                    Nombre = "Tania",
+                    Apellido = "Rodríguez",
+                    Area = "Recursos Humanos - Becarios",
+                    TotalEmpleados = 8,
+                    EnOnboarding = 3,
+                    Planta = "Todas las Plantas"
+                };
+                planta = "Todas las Plantas";
+            }
+            else
+            {
+                // Default
+                lider = new
+                {
+                    Nombre = "Juan",
+                    Apellido = "Pérez",
+                    Area = "Control de Calidad",
+                    TotalEmpleados = 15,
+                    EnOnboarding = 4,
+                    Planta = "Benito Juárez"
+                };
+                planta = "Benito Juárez";
+            }
             
             // Nuevos ingresos 2025 por área
             var nuevosIngresos = new
@@ -74,8 +122,8 @@ namespace Brose_OnboardingDashboard.Areas.Lider.Controllers
             // Score de onboarding - ranking de líderes
             var rankingLideres = new List<dynamic>
             {
-                new { Nombre = "María González", Area = "Producción", Score = 96.5, Posicion = 1, Medalla = "gold", EsUsuario = false },
-                new { Nombre = "Tú", Area = "Control de Calidad", Score = 92.3, Posicion = 2, Medalla = "silver", EsUsuario = true },
+                new { Nombre = "María González", Area = "Producción", Score = 96.5, Posicion = 1, Medalla = "gold", EsUsuario = nombrePerfil == "María González" },
+                new { Nombre = "Tú", Area = "Control de Calidad", Score = 92.3, Posicion = 2, Medalla = "silver", EsUsuario = nombrePerfil != "María González" && nombrePerfil != "Tania Rodríguez" },
                 new { Nombre = "Pedro Sánchez", Area = "Ingeniería", Score = 88.7, Posicion = 3, Medalla = "bronze", EsUsuario = false },
                 new { Nombre = "Laura Torres", Area = "Logística", Score = 85.2, Posicion = 4, Medalla = "", EsUsuario = false }
             };
@@ -87,19 +135,8 @@ namespace Brose_OnboardingDashboard.Areas.Lider.Controllers
                 new { Empleado = "María Rodríguez", Tipo = "Encuesta pendiente", Dias = 1, Prioridad = "Media" }
             };
             
-            // Datos del líder
-            var lider = new
-            {
-                Nombre = "Juan",
-                Apellido = "Pérez",
-                Area = "Control de Calidad",
-                TotalEmpleados = 15,
-                EnOnboarding = 4,
-                Planta = "Benito Juarez" // Planta del líder
-            };
-            
             ViewBag.Lider = lider;
-            ViewBag.Planta = lider.Planta; // Para mostrar en el navbar
+            ViewBag.Planta = planta;
             ViewBag.NuevosIngresos = nuevosIngresos;
             ViewBag.CumplimientoPorArea = cumplimientoPorArea;
             ViewBag.SatisfaccionPorArea = satisfaccionPorArea;

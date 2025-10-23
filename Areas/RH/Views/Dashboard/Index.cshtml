@@ -3,7 +3,269 @@
     var usuarioRH = ViewBag.UsuarioRH;
 }
 
-<div class="container-fluid px-4">
+<style>
+    .sidebar-rh {
+        position: fixed;
+        top: 75px;
+        left: 0;
+        bottom: 0;
+        width: 240px;
+        background: #fff;
+        overflow-y: auto;
+        z-index: 100;
+        box-shadow: 2px 0 15px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease;
+        border-right: 1px solid #E5E5E5;
+    }
+
+    .sidebar-rh::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .sidebar-rh::-webkit-scrollbar-track {
+        background: #f5f5f5;
+    }
+
+    .sidebar-rh::-webkit-scrollbar-thumb {
+        background: #E30613;
+        border-radius: 2px;
+    }
+
+    .sidebar-rh .nav-section {
+        padding: 10px 0;
+        border-bottom: 1px solid #F0F0F0;
+    }
+
+    .sidebar-rh .nav-section-title {
+        color: #6C757D;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 8px 20px;
+        margin-bottom: 5px;
+    }
+
+    .sidebar-rh .nav-link {
+        color: #1A1A1A;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border-left: 3px solid transparent;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .sidebar-rh .nav-link:hover {
+        background: #FFF5F5;
+        color: #E30613;
+        border-left-color: #E30613;
+    }
+
+    .sidebar-rh .nav-link.active {
+        background: #FFF0F0;
+        color: #E30613;
+        border-left-color: #E30613;
+        font-weight: 600;
+    }
+
+    .sidebar-rh .nav-link i {
+        margin-right: 10px;
+        font-size: 15px;
+        width: 18px;
+        text-align: center;
+    }
+
+    .sidebar-rh .badge {
+        margin-left: auto;
+        font-size: 9px;
+        padding: 2px 6px;
+    }
+
+    .main-content-rh {
+        margin-left: 240px;
+        padding: 20px 30px;
+        transition: margin-left 0.3s ease;
+        min-height: calc(100vh - 75px);
+        background: #F8F9FA;
+    }
+
+    .toggle-sidebar {
+        position: fixed;
+        top: 85px;
+        left: 240px;
+        z-index: 101;
+        background: #E30613;
+        color: white;
+        border: none;
+        width: 28px;
+        height: 28px;
+        border-radius: 0 4px 4px 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .toggle-sidebar:hover {
+        background: #B20510;
+    }
+
+    .sidebar-collapsed .sidebar-rh {
+        transform: translateX(-240px);
+    }
+
+    .sidebar-collapsed .main-content-rh {
+        margin-left: 0;
+    }
+
+    .sidebar-collapsed .toggle-sidebar {
+        left: 0;
+    }
+
+    @@media (max-width: 992px) {
+        .sidebar-rh {
+            transform: translateX(-240px);
+        }
+        .main-content-rh {
+            margin-left: 0;
+        }
+        .toggle-sidebar {
+            left: 0;
+        }
+        .sidebar-collapsed .sidebar-rh {
+            transform: translateX(0);
+        }
+        .sidebar-collapsed .toggle-sidebar {
+            left: 240px;
+        }
+    }
+</style>
+
+<!-- Botón para toggle del sidebar -->
+<button class="toggle-sidebar" onclick="toggleSidebar()">
+    <i class="bi bi-list"></i>
+</button>
+
+<!-- Sidebar de navegación -->
+<div class="sidebar-rh">
+    <!-- Dashboard Principal -->
+    <div class="nav-section">
+        <div class="nav-section-title">Dashboard</div>
+        <a href="/RH/Dashboard" class="nav-link active">
+            <i class="bi bi-house-door"></i>
+            <span>Vista General</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-graph-up-arrow"></i>
+            <span>Métricas</span>
+        </a>
+    </div>
+
+    <!-- Gestión de Empleados -->
+    <div class="nav-section">
+        <div class="nav-section-title">Empleados</div>
+        <a href="/RH/Empleados" class="nav-link">
+            <i class="bi bi-people"></i>
+            <span>Todos los Empleados</span>
+            <span class="badge bg-danger">170</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-person-plus"></i>
+            <span>Nuevos Ingresos</span>
+            <span class="badge bg-success">35</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-arrow-left-right"></i>
+            <span>Cambios de Posición</span>
+        </a>
+    </div>
+
+    <!-- Onboarding -->
+    <div class="nav-section">
+        <div class="nav-section-title">Onboarding</div>
+        <a href="#" class="nav-link">
+            <i class="bi bi-list-check"></i>
+            <span>Checklists</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-book"></i>
+            <span>Planes de Entrenamiento</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-clipboard-check"></i>
+            <span>Tareas Pendientes</span>
+            <span class="badge bg-warning text-dark">32</span>
+        </a>
+    </div>
+
+    <!-- Evaluación -->
+    <div class="nav-section">
+        <div class="nav-section-title">Evaluación</div>
+        <a href="#" class="nav-link">
+            <i class="bi bi-chat-square-quote"></i>
+            <span>Encuestas</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-emoji-smile"></i>
+            <span>Satisfacción</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-star"></i>
+            <span>Evaluaciones</span>
+        </a>
+    </div>
+
+    <!-- Liderazgo -->
+    <div class="nav-section">
+        <div class="nav-section-title">Liderazgo</div>
+        <a href="#" class="nav-link">
+            <i class="bi bi-person-badge"></i>
+            <span>Gestión de Líderes</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-trophy"></i>
+            <span>Ranking</span>
+        </a>
+    </div>
+
+    <!-- Reportes -->
+    <div class="nav-section">
+        <div class="nav-section-title">Reportes</div>
+        <a href="#" class="nav-link">
+            <i class="bi bi-file-earmark-bar-graph"></i>
+            <span>Reportes Generales</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-exclamation-triangle"></i>
+            <span>Riesgos de Rotación</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-download"></i>
+            <span>Exportar Datos</span>
+        </a>
+    </div>
+
+    <!-- Configuración -->
+    <div class="nav-section">
+        <div class="nav-section-title">Sistema</div>
+        <a href="#" class="nav-link">
+            <i class="bi bi-gear"></i>
+            <span>Configuración</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-shield-lock"></i>
+            <span>Roles y Permisos</span>
+        </a>
+    </div>
+</div>
+
+<!-- Contenido principal -->
+<div class="main-content-rh">
     <!-- Banner superior -->
     <div class="row mb-4">
         <div class="col-12">
@@ -277,3 +539,30 @@
         </div>
     </div>
 </div>
+
+<script>
+    function toggleSidebar() {
+        document.body.classList.toggle('sidebar-collapsed');
+        
+        // Guardar preferencia en localStorage
+        const isCollapsed = document.body.classList.contains('sidebar-collapsed');
+        localStorage.setItem('sidebarCollapsed', isCollapsed);
+    }
+
+    // Restaurar estado del sidebar al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        if (isCollapsed) {
+            document.body.classList.add('sidebar-collapsed');
+        }
+    });
+
+    // Cerrar sidebar en móvil al hacer click en un enlace
+    if (window.innerWidth <= 768) {
+        document.querySelectorAll('.sidebar-rh .nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                document.body.classList.add('sidebar-collapsed');
+            });
+        });
+    }
+</script>

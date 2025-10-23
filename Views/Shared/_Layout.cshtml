@@ -22,17 +22,17 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <!-- Menú Demo (sin autenticación) -->
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
+                        <li class="nav-item" id="menu-rh">
                             <a class="nav-link" asp-area="RH" asp-controller="Dashboard" asp-action="Index">
                                 <i class="bi bi-house-door me-1"></i>Dashboard RH
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" id="menu-empleado">
                             <a class="nav-link" asp-area="Empleado" asp-controller="Dashboard" asp-action="Index">
                                 <i class="bi bi-person-badge me-1"></i>Dashboard Empleado
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" id="menu-lider">
                             <a class="nav-link" asp-area="Lider" asp-controller="Dashboard" asp-action="Index">
                                 <i class="bi bi-people-fill me-1"></i>Dashboard Líder
                             </a>
@@ -40,16 +40,139 @@
                     </ul>
                     
                     <ul class="navbar-nav ms-auto align-items-center">
-                        <li class="nav-item me-3">
-                            <span class="nav-link text-white-50">
-                                <i class="bi bi-info-circle me-1"></i>Modo Demo
-                            </span>
+                        <!-- Dropdown de Modo Demo con perfiles -->
+                        <li class="nav-item dropdown me-3">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="modoDemoDropdown" role="button" 
+                               data-bs-toggle="dropdown" aria-expanded="false" style="background: rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 6px;">
+                                <i class="bi bi-info-circle me-2"></i>
+                                <span id="perfilActual">Modo Demo</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="modoDemoDropdown" style="min-width: 320px; border-radius: 10px;">
+                                <li class="px-3 py-2 border-bottom">
+                                    <small class="text-muted fw-bold text-uppercase" style="font-size: 10px;">Seleccionar Perspectiva</small>
+                                </li>
+                                
+                                <!-- Tania Rodriguez - RH -->
+                                <li>
+                                    <a class="dropdown-item py-2 perfil-item" href="#" onclick="cambiarPerfil('Tania Rodríguez', 'RH', 'Todas las Plantas', true, true, false)">
+                                        <div class="d-flex align-items-start">
+                                            <div class="rounded-circle bg-danger bg-opacity-10 p-2 me-3" style="width: 42px; height: 42px;">
+                                                <i class="bi bi-person-badge-fill text-danger fs-5"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="fw-bold" style="font-size: 13px;">Tania Rodríguez</div>
+                                                <small class="text-muted">Encargada de RH</small><br>
+                                                <span class="badge bg-danger" style="font-size: 9px;">Acceso Total</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                
+                                <li><hr class="dropdown-divider"></li>
+                                
+                                <!-- María González - Líder -->
+                                <li>
+                                    <a class="dropdown-item py-2 perfil-item" href="#" onclick="cambiarPerfil('María González', 'Líder', 'Benito Juárez', false, true, false)">
+                                        <div class="d-flex align-items-start">
+                                            <div class="rounded-circle bg-warning bg-opacity-10 p-2 me-3" style="width: 42px; height: 42px;">
+                                                <i class="bi bi-award-fill text-warning fs-5"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="fw-bold" style="font-size: 13px;">María González</div>
+                                                <small class="text-muted">Líder de Área - Ingeniería</small><br>
+                                                <span class="badge bg-warning text-dark" style="font-size: 9px;">Líder</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                
+                                <li><hr class="dropdown-divider"></li>
+                                
+                                <li class="px-3 py-1">
+                                    <small class="text-muted fw-bold" style="font-size: 10px;">EMPLEADOS</small>
+                                </li>
+                                
+                                <!-- Juan Pérez - Empleado Completado -->
+                                <li>
+                                    <a class="dropdown-item py-2 perfil-item" href="#" onclick="cambiarPerfil('Juan Pérez García', 'Empleado', 'Benito Juárez', false, false, true, 100, 'completado')">
+                                        <div class="d-flex align-items-start">
+                                            <div class="rounded-circle bg-success bg-opacity-10 p-2 me-3" style="width: 42px; height: 42px;">
+                                                <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="fw-bold" style="font-size: 13px;">Juan Pérez García</div>
+                                                <small class="text-muted">Ing. de Manufactura - GE</small><br>
+                                                <span class="badge bg-success" style="font-size: 9px;">✓ Onboarding Completado</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                
+                                <!-- Laura Sánchez - El Marqués -->
+                                <li>
+                                    <a class="dropdown-item py-2 perfil-item" href="#" onclick="cambiarPerfil('Laura Sánchez M.', 'Empleado', 'El Marqués', false, false, true, 75, 'activo')">
+                                        <div class="d-flex align-items-start">
+                                            <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3" style="width: 42px; height: 42px;">
+                                                <i class="bi bi-person-fill text-primary fs-5"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="fw-bold" style="font-size: 13px;">Laura Sánchez M.</div>
+                                                <small class="text-muted">Analista de Calidad - GKL</small><br>
+                                                <div class="progress mt-1" style="height: 5px;">
+                                                    <div class="progress-bar bg-primary" style="width: 75%"></div>
+                                                </div>
+                                                <small class="text-muted" style="font-size: 10px;">75% completado</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                
+                                <!-- Carlos Ramírez - Aeropuerto -->
+                                <li>
+                                    <a class="dropdown-item py-2 perfil-item" href="#" onclick="cambiarPerfil('Carlos Ramírez S.', 'Empleado', 'Aeropuerto', false, false, true, 45, 'activo')">
+                                        <div class="d-flex align-items-start">
+                                            <div class="rounded-circle bg-info bg-opacity-10 p-2 me-3" style="width: 42px; height: 42px;">
+                                                <i class="bi bi-person-fill text-info fs-5"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="fw-bold" style="font-size: 13px;">Carlos Ramírez S.</div>
+                                                <small class="text-muted">Técnico de Mantenimiento - FL</small><br>
+                                                <div class="progress mt-1" style="height: 5px;">
+                                                    <div class="progress-bar bg-info" style="width: 45%"></div>
+                                                </div>
+                                                <small class="text-muted" style="font-size: 10px;">45% completado</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                
+                                <!-- Ana Martínez - Puebla -->
+                                <li>
+                                    <a class="dropdown-item py-2 perfil-item" href="#" onclick="cambiarPerfil('Ana Martínez T.', 'Empleado', 'Puebla', false, false, true, 90, 'activo')">
+                                        <div class="d-flex align-items-start">
+                                            <div class="rounded-circle bg-secondary bg-opacity-10 p-2 me-3" style="width: 42px; height: 42px;">
+                                                <i class="bi bi-person-fill text-secondary fs-5"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="fw-bold" style="font-size: 13px;">Ana Martínez T.</div>
+                                                <small class="text-muted">Supervisora de Línea - WS</small><br>
+                                                <div class="progress mt-1" style="height: 5px;">
+                                                    <div class="progress-bar bg-success" style="width: 90%"></div>
+                                                </div>
+                                                <small class="text-muted" style="font-size: 10px;">90% completado</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
+                        
                         @if (ViewBag.Planta != null)
                         {
                             <li class="nav-item me-3">
                                 <span class="nav-link text-white">
-                                    <i class="bi bi-building me-1"></i>@ViewBag.Planta
+                                    <i class="bi bi-building me-1"></i>
+                                    <span id="plantaActual">@ViewBag.Planta</span>
                                 </span>
                             </li>
                         }
@@ -72,6 +195,195 @@
             &copy; 2025 - Brose Onboarding Dashboard - Sistema de Gestión de Onboarding
         </div>
     </footer>
+    
+    <style>
+        .perfil-item {
+            transition: all 0.2s ease;
+        }
+        
+        .perfil-item:hover {
+            background-color: #FFF5F5 !important;
+            padding-left: 1rem !important;
+        }
+        
+        .dropdown-menu {
+            border: none;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .dropdown-menu::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .dropdown-menu::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .dropdown-menu::-webkit-scrollbar-thumb {
+            background: #E30613;
+            border-radius: 10px;
+        }
+        
+        .dropdown-menu::-webkit-scrollbar-thumb:hover {
+            background: #B20510;
+        }
+    </style>
+    
+    <script>
+        // Cargar perfil guardado al iniciar
+        document.addEventListener('DOMContentLoaded', function() {
+            const perfilGuardado = localStorage.getItem('perfilDemo');
+            if (perfilGuardado) {
+                const perfil = JSON.parse(perfilGuardado);
+                aplicarPerfilSinNotificacion(perfil);
+            }
+        });
+        
+        function cambiarPerfil(nombre, rol, planta, verRH, verLider, verEmpleado, progreso = 0, estado = 'activo') {
+            const perfil = {
+                nombre: nombre,
+                rol: rol,
+                planta: planta,
+                verRH: verRH,
+                verLider: verLider,
+                verEmpleado: verEmpleado,
+                progreso: progreso,
+                estado: estado
+            };
+            
+            // Guardar en localStorage
+            localStorage.setItem('perfilDemo', JSON.stringify(perfil));
+            
+            // Mostrar notificación
+            mostrarNotificacion(perfil);
+            
+            // Redirigir según el rol con parámetro de perfil
+            setTimeout(() => {
+                if (verRH) {
+                    window.location.href = '/RH/Dashboard?perfil=' + encodeURIComponent(nombre);
+                } else if (verLider) {
+                    window.location.href = '/Lider/Dashboard?perfil=' + encodeURIComponent(nombre);
+                } else if (verEmpleado) {
+                    window.location.href = '/Empleado/Dashboard?perfil=' + encodeURIComponent(nombre);
+                }
+            }, 500);
+        }
+        
+        function aplicarPerfilSinNotificacion(perfil) {
+            // Actualizar texto del perfil actual
+            const perfilActual = document.getElementById('perfilActual');
+            if (perfilActual) {
+                perfilActual.innerHTML = `<i class="bi bi-person-circle me-1"></i>${perfil.nombre}`;
+            }
+            
+            // Actualizar planta
+            const plantaActual = document.getElementById('plantaActual');
+            if (plantaActual) {
+                plantaActual.textContent = perfil.planta;
+            }
+            
+            // Ocultar/mostrar opciones del menú según el rol usando IDs
+            const menuRH = document.getElementById('menu-rh');
+            const menuEmpleado = document.getElementById('menu-empleado');
+            const menuLider = document.getElementById('menu-lider');
+            
+            console.log('Aplicando perfil:', perfil);
+            console.log('Elementos encontrados:', {menuRH, menuEmpleado, menuLider});
+            
+            // Ocultar todos primero
+            if (menuRH) {
+                menuRH.style.display = 'none';
+                console.log('Ocultando menu RH');
+            }
+            
+            if (menuEmpleado) {
+                menuEmpleado.style.display = 'none';
+                console.log('Ocultando menu Empleado');
+            }
+            
+            if (menuLider) {
+                menuLider.style.display = 'none';
+                console.log('Ocultando menu Lider');
+            }
+            
+            // Mostrar solo los permitidos
+            if (perfil.verRH && menuRH) {
+                menuRH.style.display = 'block';
+                console.log('Mostrando menu RH');
+            }
+            
+            if (perfil.verEmpleado && menuEmpleado) {
+                menuEmpleado.style.display = 'block';
+                console.log('Mostrando menu Empleado');
+            }
+            
+            if (perfil.verLider && menuLider) {
+                menuLider.style.display = 'block';
+                console.log('Mostrando menu Lider');
+            }
+            
+            // Interceptar clicks en los menús para mantener el perfil
+            const todosLosMenus = document.querySelectorAll('#menu-rh a, #menu-empleado a, #menu-lider a');
+            console.log('Menús encontrados para interceptar:', todosLosMenus.length);
+            
+            todosLosMenus.forEach(menu => {
+                menu.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    const perfil = JSON.parse(localStorage.getItem('perfilDemo') || '{}');
+                    console.log('Click en menú, redirigiendo con perfil:', perfil.nombre);
+                    if (perfil.nombre) {
+                        window.location.href = href + '?perfil=' + encodeURIComponent(perfil.nombre);
+                    } else {
+                        window.location.href = href;
+                    }
+                });
+            });
+        }
+        
+        function mostrarNotificacion(perfil) {
+            // Crear notificación toast
+            const toastHTML = `
+                <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+                    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header bg-danger text-white">
+                            <i class="bi bi-person-check-fill me-2"></i>
+                            <strong class="me-auto">Perfil Cambiado</strong>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+                        </div>
+                        <div class="toast-body">
+                            <strong>${perfil.nombre}</strong><br>
+                            <small class="text-muted">${perfil.rol} - ${perfil.planta}</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Eliminar toasts anteriores
+            const toastsAnteriores = document.querySelectorAll('.toast-container');
+            toastsAnteriores.forEach(t => t.remove());
+            
+            // Agregar nuevo toast
+            document.body.insertAdjacentHTML('beforeend', toastHTML);
+            
+            // Auto-ocultar después de 3 segundos
+            setTimeout(() => {
+                const toast = document.querySelector('.toast-container');
+                if (toast) {
+                    toast.remove();
+                }
+            }, 3000);
+        }
+        
+        // Limpiar perfil (volver a modo demo normal)
+        function limpiarPerfil() {
+            localStorage.removeItem('perfilDemo');
+            location.reload();
+        }
+    </script>
+    
     <!-- Bootstrap 5 JS desde CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -79,3 +391,4 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
