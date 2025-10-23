@@ -1,0 +1,401 @@
+@{
+    ViewData["Title"] = "Perfil del Empleado";
+    var empleado = ViewBag.Empleado;
+    var roadmap = empleado.Roadmap;
+    var encuestas = empleado.Encuestas;
+}
+
+<style>
+    .perfil-header {
+        background: linear-gradient(135deg, #E30613 0%, #B20510 100%);
+        border-radius: 10px;
+        padding: 30px;
+        color: white;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(227, 6, 19, 0.2);
+    }
+    
+    .badge-estado {
+        font-size: 11px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+    
+    .roadmap-timeline {
+        position: relative;
+        padding-left: 30px;
+    }
+    
+    .roadmap-timeline::before {
+        content: '';
+        position: absolute;
+        left: 10px;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: #E5E5E5;
+    }
+    
+    .roadmap-item {
+        position: relative;
+        margin-bottom: 30px;
+        padding-left: 20px;
+    }
+    
+    .roadmap-item::before {
+        content: '';
+        position: absolute;
+        left: -20px;
+        top: 5px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 3px solid #E30613;
+        background: white;
+        z-index: 1;
+    }
+    
+    .roadmap-item.completado::before {
+        background: #28A745;
+        border-color: #28A745;
+    }
+    
+    .roadmap-item.en-proceso::before {
+        background: #FFC107;
+        border-color: #FFC107;
+    }
+    
+    .roadmap-item.pendiente::before {
+        background: #6C757D;
+        border-color: #6C757D;
+    }
+    
+    .metric-card {
+        text-align: center;
+        padding: 20px;
+        border-radius: 10px;
+        border: 2px solid #F0F0F0;
+        transition: all 0.3s ease;
+    }
+    
+    .metric-card:hover {
+        border-color: #E30613;
+        box-shadow: 0 4px 15px rgba(227, 6, 19, 0.1);
+    }
+    
+    .metric-value {
+        font-size: 32px;
+        font-weight: bold;
+        color: #E30613;
+        margin: 10px 0;
+    }
+    
+    .metric-label {
+        font-size: 12px;
+        color: #6C757D;
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+</style>
+
+<div class="container-fluid px-4">
+    <!-- Botón de regreso -->
+    <div class="mb-3">
+        <a href="@Url.Action("Index", "Dashboard")" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-2"></i>Volver al Dashboard
+        </a>
+    </div>
+
+    <!-- Header del Perfil -->
+    <div class="perfil-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="rounded-circle bg-white text-danger d-flex align-items-center justify-content-center me-3" 
+                         style="width: 80px; height: 80px; font-size: 32px; font-weight: bold;">
+                        @empleado.Nombre.Substring(0, 2).ToUpper()
+                    </div>
+                    <div>
+                        <h2 class="mb-1 fw-bold">@empleado.Nombre</h2>
+                        <div class="d-flex gap-2 align-items-center">
+                            <i class="bi bi-briefcase"></i>
+                            <span>@empleado.Puesto</span>
+                            <span class="mx-2">•</span>
+                            <i class="bi bi-building"></i>
+                            <span>@empleado.Departamento</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-3 mt-2">
+                    <div class="col-auto">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-geo-alt-fill me-2"></i>
+                            <div>
+                                <small class="d-block opacity-75">Área</small>
+                                <span class="badge bg-danger">@empleado.Area</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-pin-map-fill me-2"></i>
+                            <div>
+                                <small class="d-block opacity-75">Planta</small>
+                                <strong>@empleado.Planta</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-person-badge me-2"></i>
+                            <div>
+                                <small class="d-block opacity-75">Líder</small>
+                                <strong>@empleado.Lider</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 text-end">
+                @{
+                    var estadoClass = empleado.Estado == "Completado" ? "success" : "warning";
+                    var riesgoClass = empleado.Riesgo == "Bajo" ? "success" : empleado.Riesgo == "Medio" ? "warning" : "danger";
+                }
+                <span class="badge bg-@estadoClass badge-estado mb-2">@empleado.Estado</span>
+                <h1 class="display-4 fw-bold mb-1">@empleado.Progreso%</h1>
+                <p class="mb-2">Progreso de Onboarding</p>
+                <div class="progress" style="height: 8px;">
+                    <div class="progress-bar bg-success" style="width: @empleado.Progreso%"></div>
+                </div>
+                <small class="d-block mt-2">
+                    <i class="bi bi-calendar3 me-1"></i>
+                    Inicio: @DateTime.Parse(empleado.FechaIngreso).ToString("dd/MM/yyyy")
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Métricas Principales -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="metric-card">
+                <i class="bi bi-calendar-check text-primary" style="font-size: 32px;"></i>
+                <div class="metric-value">@empleado.DiasOnboarding</div>
+                <div class="metric-label">Días en Onboarding</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <i class="bi bi-list-check text-success" style="font-size: 32px;"></i>
+                <div class="metric-value">@empleado.TareasCompletadas/@empleado.TareasTotales</div>
+                <div class="metric-label">Tareas Completadas</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <i class="bi bi-emoji-smile text-warning" style="font-size: 32px;"></i>
+                <div class="metric-value">@empleado.Satisfaccion</div>
+                <div class="metric-label">Satisfacción Promedio</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <i class="bi bi-exclamation-triangle text-@riesgoClass" style="font-size: 32px;"></i>
+                <div class="metric-value text-@riesgoClass">@empleado.Riesgo</div>
+                <div class="metric-label">Nivel de Riesgo</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Roadmap y Detalles -->
+    <div class="row">
+        <!-- Roadmap de Onboarding -->
+        <div class="col-md-7">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-4">
+                        <i class="bi bi-map text-primary me-2"></i>
+                        Roadmap de Onboarding
+                    </h5>
+                    
+                    <div class="roadmap-timeline">
+                        @foreach (var fase in roadmap)
+                        {
+                            var faseEstadoClass = fase.Estado.ToString().ToLower().Replace(" ", "-");
+                            <div class="roadmap-item @faseEstadoClass">
+                                <div class="card border-0 bg-light">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <div>
+                                                <h6 class="fw-bold mb-1">@fase.Fase</h6>
+                                                <small class="text-muted">
+                                                    <i class="bi bi-calendar-range me-1"></i>
+                                                    @DateTime.Parse(fase.FechaInicio.ToString()).ToString("dd/MM") - @DateTime.Parse(fase.FechaFin.ToString()).ToString("dd/MM/yyyy")
+                                                </small>
+                                            </div>
+                                            @{
+                                                var badgeColor = fase.Estado == "Completado" ? "success" : fase.Estado == "En Proceso" ? "warning" : "secondary";
+                                            }
+                                            <span class="badge bg-@badgeColor">@fase.Estado</span>
+                                        </div>
+                                        
+                                        <div class="progress mb-3" style="height: 8px;">
+                                            <div class="progress-bar bg-@badgeColor" style="width: @fase.Progreso%"></div>
+                                        </div>
+                                        
+                                        <div class="mt-2">
+                                            <small class="text-muted d-block mb-2"><strong>Tareas:</strong></small>
+                                            <ul class="list-unstyled mb-0">
+                                                @foreach (var tarea in fase.Tareas)
+                                                {
+                                                    <li class="mb-1">
+                                                        <i class="bi bi-check-circle-fill text-@badgeColor me-2" style="font-size: 12px;"></i>
+                                                        <small>@tarea</small>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel Lateral -->
+        <div class="col-md-5">
+            <!-- Información de Contacto -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-3">
+                        <i class="bi bi-person-lines-fill text-primary me-2"></i>
+                        Información de Contacto
+                    </h5>
+                    <div class="mb-3">
+                        <small class="text-muted d-block mb-1">Email</small>
+                        <a href="mailto:@empleado.Email" class="text-decoration-none">
+                            <i class="bi bi-envelope me-2"></i>@empleado.Email
+                        </a>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted d-block mb-1">Teléfono</small>
+                        <a href="tel:@empleado.Telefono" class="text-decoration-none">
+                            <i class="bi bi-telephone me-2"></i>@empleado.Telefono
+                        </a>
+                    </div>
+                    <div>
+                        <small class="text-muted d-block mb-1">Fecha de Ingreso</small>
+                        <i class="bi bi-calendar-event me-2"></i>
+                        @DateTime.Parse(empleado.FechaIngreso).ToString("dd 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-ES"))
+                    </div>
+                </div>
+            </div>
+
+            <!-- Encuestas de Satisfacción -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-3">
+                        <i class="bi bi-clipboard-data text-primary me-2"></i>
+                        Encuestas de Satisfacción
+                    </h5>
+                    @foreach (var encuesta in encuestas)
+                    {
+                        var isCompletada = encuesta.Estado == "Completada";
+                        var puntuacion = encuesta.Puntuacion;
+                        var encuestaColorClass = puntuacion >= 4.5 ? "success" : puntuacion >= 4.0 ? "info" : puntuacion >= 3.5 ? "warning" : "danger";
+                        
+                        <div class="mb-3 pb-3 border-bottom">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <strong class="small">@encuesta.Periodo</strong>
+                                @if (isCompletada)
+                                {
+                                    <span class="badge bg-@encuestaColorClass">@puntuacion / 5.0</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">@encuesta.Estado</span>
+                                }
+                            </div>
+                            <small class="text-muted">
+                                <i class="bi bi-calendar3 me-1"></i>
+                                @DateTime.Parse(encuesta.Fecha.ToString()).ToString("dd/MM/yyyy")
+                            </small>
+                            @if (isCompletada)
+                            {
+                                <div class="progress mt-2" style="height: 6px;">
+                                    <div class="progress-bar bg-@encuestaColorClass" style="width: @(puntuacion * 20)%"></div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Estadísticas Adicionales -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-3">
+                        <i class="bi bi-graph-up text-primary me-2"></i>
+                        Estadísticas
+                    </h5>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <small class="text-muted">Días Restantes</small>
+                            <strong>@empleado.DiasRestantes días</strong>
+                        </div>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-info" style="width: @((90 - empleado.DiasRestantes) / 90.0 * 100)%"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <small class="text-muted">Tiempo Promedio del Área</small>
+                            <strong>@empleado.TiempoPromedio</strong>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex justify-content-between">
+                            <small class="text-muted">Ranking en el Equipo</small>
+                            <span class="badge bg-primary">@empleado.RankingEquipo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Acciones Rápidas -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-3">
+                        <i class="bi bi-lightning-fill text-warning me-2"></i>
+                        Acciones Rápidas
+                    </h5>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button class="btn btn-outline-primary">
+                            <i class="bi bi-envelope me-2"></i>Enviar Mensaje
+                        </button>
+                        <button class="btn btn-outline-success">
+                            <i class="bi bi-clipboard-check me-2"></i>Asignar Tarea
+                        </button>
+                        <button class="btn btn-outline-info">
+                            <i class="bi bi-calendar-plus me-2"></i>Agendar Reunión 1:1
+                        </button>
+                        <button class="btn btn-outline-warning">
+                            <i class="bi bi-file-earmark-text me-2"></i>Ver Documentos
+                        </button>
+                        <button class="btn btn-outline-secondary">
+                            <i class="bi bi-chat-dots me-2"></i>Dar Feedback
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -49,3 +49,21 @@ CLAUDE.md
 
 # Build output (keep for version control)
 # dist-modern/
+
+# .NET build folders
+bin/
+obj/
+*.dll
+*.pdb
+*.cache
+
+# .NET build artifacts
+bin/
+obj/
+*.dll
+*.pdb
+*.cache
+*.props
+*.targets
+publish/
+deploy.zip
