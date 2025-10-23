@@ -95,13 +95,6 @@ namespace Brose_OnboardingDashboard.Areas.RH.Controllers
             
             var departamentos = new List<string> { "Todos", "Producción", "Calidad", "Mantenimiento", "Ingeniería", "Recursos Humanos", "Finanzas", "Logística", "IT", "Compras", "Seguridad" };
             var estados = new List<string> { "Todos", "Activo", "En Onboarding", "Nuevo Ingreso", "NETP Verde", "NETP Naranja", "NETP Rojo" };
-            };
-
-            // Datos para filtros
-            var plantas = new List<string> { "Todas", "Benito Juárez", "El Marqués", "Aeropuerto", "Puebla" };
-            var areas = new List<string> { "Todas", "GE", "GKL", "FL", "WS", "ATS" };
-            var departamentos = new List<string> { "Todos", "Producción", "Calidad", "Mantenimiento", "Ingeniería", "Recursos Humanos", "Finanzas", "Logística", "IT", "Compras", "Seguridad" };
-            var estados = new List<string> { "Todos", "Activo", "En Onboarding", "Nuevo Ingreso" };
             var lideres = new List<string> { "Todos", "María González", "Carlos Rodríguez", "Ana Martínez", "Juan Pérez" };
 
             ViewBag.Empleados = empleados;

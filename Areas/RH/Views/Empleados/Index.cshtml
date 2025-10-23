@@ -413,8 +413,17 @@
                     }
                 </select>
             </div>
-            <div class="col-md-2">
-                <label class="form-label small fw-bold text-muted">Área</label>
+            <div class="col-md-3">
+                <label class="form-label small fw-bold text-muted">Business Unit (BU)</label>
+                <select class="form-select form-select-sm" id="filterBU" onchange="filterEmployees()">
+                    @foreach (var bu in ViewBag.BusinessUnits)
+                    {
+                        <option>@bu</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small fw-bold text-muted">Área Funcional</label>
                 <select class="form-select form-select-sm" id="filterArea" onchange="filterEmployees()">
                     @foreach (var area in ViewBag.Areas)
                     {
@@ -422,7 +431,7 @@
                     }
                 </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="form-label small fw-bold text-muted">Departamento</label>
                 <select class="form-select form-select-sm" id="filterDepartamento" onchange="filterEmployees()">
                     @foreach (var depto in ViewBag.Departamentos)
@@ -534,6 +543,7 @@
             <div class="employee-card" 
                  data-nombre="@emp.Nombre" 
                  data-puesto="@emp.Puesto" 
+                 data-bu="@emp.BusinessUnit"
                  data-area="@emp.Area" 
                  data-departamento="@emp.Departamento" 
                  data-planta="@emp.Planta" 
@@ -587,11 +597,26 @@
         if (isCollapsed) {
             document.body.classList.add('sidebar-collapsed');
         }
+
+        // Leer parámetros de URL para auto-filtrar
+        const urlParams = new URLSearchParams(window.location.search);
+        const estadoParam = urlParams.get('estado');
+        if (estadoParam) {
+            const filterEstado = document.getElementById('filterEstado');
+            for (let i = 0; i < filterEstado.options.length; i++) {
+                if (filterEstado.options[i].value === estadoParam) {
+                    filterEstado.selectedIndex = i;
+                    break;
+                }
+            }
+            filterEmployees();
+        }
     });
 
     function filterEmployees() {
         const searchTerm = document.getElementById('searchInput').value.toLowerCase();
         const filterPlanta = document.getElementById('filterPlanta').value;
+        const filterBU = document.getElementById('filterBU').value;
         const filterArea = document.getElementById('filterArea').value;
         const filterDepartamento = document.getElementById('filterDepartamento').value;
         const filterEstado = document.getElementById('filterEstado').value;
@@ -614,12 +639,13 @@
 
             const matchSearch = nombre.includes(searchTerm) || puesto.includes(searchTerm) || departamento.toLowerCase().includes(searchTerm);
             const matchPlanta = filterPlanta === 'Todas' || planta === filterPlanta;
+            const matchBU = filterBU === 'Todas' || card.dataset.bu === filterBU;
             const matchArea = filterArea === 'Todas' || area === filterArea;
             const matchDepartamento = filterDepartamento === 'Todos' || departamento === filterDepartamento;
             const matchEstado = filterEstado === 'Todos' || estado === filterEstado;
             const matchLider = filterLider === 'Todos' || lider === filterLider;
 
-            if (matchSearch && matchPlanta && matchArea && matchDepartamento && matchEstado && matchLider) {
+            if (matchSearch && matchPlanta && matchBU && matchArea && matchDepartamento && matchEstado && matchLider) {
                 card.style.display = 'block';
                 visibleCount++;
                 
@@ -640,6 +666,7 @@
     function clearFilters() {
         document.getElementById('searchInput').value = '';
         document.getElementById('filterPlanta').selectedIndex = 0;
+        document.getElementById('filterBU').selectedIndex = 0;
         document.getElementById('filterArea').selectedIndex = 0;
         document.getElementById('filterDepartamento').selectedIndex = 0;
         document.getElementById('filterEstado').selectedIndex = 0;
