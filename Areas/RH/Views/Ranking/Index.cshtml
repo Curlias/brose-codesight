@@ -1,0 +1,257 @@
+@{
+    ViewData["Title"] = "Ranking de Desempeño";
+}
+
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="fw-bold mb-1">
+                <i class="bi bi-trophy-fill text-danger me-2"></i>
+                Ranking de Desempeño
+            </h2>
+            <p class="text-muted mb-0">Clasificación por rendimiento de líderes, empleados y áreas</p>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <ul class="nav nav-tabs mb-4" id="rankingTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="lideres-tab" data-bs-toggle="tab" data-bs-target="#lideres" type="button">
+                <i class="bi bi-person-badge me-1"></i>
+                Ranking de Líderes
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="empleados-tab" data-bs-toggle="tab" data-bs-target="#empleados" type="button">
+                <i class="bi bi-people me-1"></i>
+                Top 10 Empleados
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="areas-tab" data-bs-toggle="tab" data-bs-target="#areas" type="button">
+                <i class="bi bi-diagram-3 me-1"></i>
+                Ranking por Área
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="rankingTabContent">
+        <!-- Tab: Ranking de Líderes -->
+        <div class="tab-pane fade show active" id="lideres" role="tabpanel">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="text-center" style="width: 80px;">Posición</th>
+                                    <th>Líder</th>
+                                    <th>Área</th>
+                                    <th class="text-center">Empleados</th>
+                                    <th class="text-center">Progreso</th>
+                                    <th class="text-center">Satisfacción</th>
+                                    <th class="text-center">Riesgo</th>
+                                    <th class="text-center">Puntuación</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var lider in ViewBag.RankingLideres)
+                                {
+                                    var medalClass = lider.Posicion == 1 ? "text-warning" : (lider.Posicion == 2 ? "text-secondary" : (lider.Posicion == 3 ? "text-danger" : ""));
+                                    var riesgoClass = lider.RiesgoPromedio == "Bajo" ? "success" : (lider.RiesgoPromedio == "Medio" ? "warning" : "danger");
+                                    
+                                    <tr>
+                                        <td class="text-center">
+                                            @if (lider.Posicion <= 3)
+                                            {
+                                                <i class="bi bi-trophy-fill @medalClass fs-3"></i>
+                                            }
+                                            else
+                                            {
+                                                <span class="fs-5 fw-bold text-muted">#@lider.Posicion</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-circle bg-danger text-white me-2">
+                                                    @lider.Nombre.Substring(0, 1)
+                                                </div>
+                                                <strong>@lider.Nombre</strong>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-primary">@lider.Area</span></td>
+                                        <td class="text-center">
+                                            <span class="badge bg-secondary">@lider.EmpleadosACargo</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="progress" style="height: 20px; width: 80px; margin: 0 auto;">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: @lider.ProgresoPromedio%">
+                                                    @lider.ProgresoPromedio%
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="fw-bold">@lider.SatisfaccionPromedio</span>
+                                            <i class="bi bi-star-fill text-warning ms-1"></i>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge bg-@riesgoClass">@lider.RiesgoPromedio</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="fs-5 fw-bold text-danger">@lider.Puntuacion</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Top 10 Empleados -->
+        <div class="tab-pane fade" id="empleados" role="tabpanel">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="text-center" style="width: 80px;">Posición</th>
+                                    <th>Empleado</th>
+                                    <th>Puesto</th>
+                                    <th>Líder</th>
+                                    <th class="text-center">Progreso</th>
+                                    <th class="text-center">Satisfacción</th>
+                                    <th class="text-center">Días Onboarding</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var emp in ViewBag.RankingEmpleados)
+                                {
+                                    var medalClass = emp.Posicion == 1 ? "text-warning" : (emp.Posicion == 2 ? "text-secondary" : (emp.Posicion == 3 ? "text-danger" : ""));
+                                    var progresoColor = emp.Progreso >= 90 ? "success" : (emp.Progreso >= 80 ? "info" : "warning");
+                                    
+                                    <tr>
+                                        <td class="text-center">
+                                            @if (emp.Posicion <= 3)
+                                            {
+                                                <i class="bi bi-trophy-fill @medalClass fs-3"></i>
+                                            }
+                                            else
+                                            {
+                                                <span class="fs-5 fw-bold text-muted">#@emp.Posicion</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-circle bg-danger text-white me-2">
+                                                    @emp.Nombre.Substring(0, 1)
+                                                </div>
+                                                <strong>@emp.Nombre</strong>
+                                            </div>
+                                        </td>
+                                        <td>@emp.Puesto</td>
+                                        <td><span class="badge bg-info">@emp.Lider</span></td>
+                                        <td class="text-center">
+                                            <div class="progress" style="height: 24px; width: 80px; margin: 0 auto;">
+                                                <div class="progress-bar bg-@progresoColor fw-bold" role="progressbar" style="width: @emp.Progreso%">
+                                                    @emp.Progreso%
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="fw-bold fs-5">@emp.Satisfaccion</span>
+                                            <i class="bi bi-star-fill text-warning ms-1"></i>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge bg-secondary">@emp.DiasOnboarding días</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Ranking por Área -->
+        <div class="tab-pane fade" id="areas" role="tabpanel">
+            <div class="row">
+                @foreach (var area in ViewBag.RankingAreas)
+                {
+                    var riesgoClass = area.RiesgoPromedio == "Bajo" ? "success" : (area.RiesgoPromedio == "Medio" ? "warning" : "danger");
+                    var progresoColor = area.ProgresoPromedio >= 85 ? "success" : (area.ProgresoPromedio >= 80 ? "info" : "warning");
+                    
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold mb-3">@area.Area</h5>
+                                
+                                <div class="mb-3">
+                                    <small class="text-muted d-block mb-1">Progreso Promedio</small>
+                                    <div class="progress" style="height: 25px;">
+                                        <div class="progress-bar bg-@progresoColor fw-bold" role="progressbar" style="width: @area.ProgresoPromedio%">
+                                            @area.ProgresoPromedio%
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="text-muted small">Satisfacción:</span>
+                                    <span class="fw-bold">
+                                        @area.SatisfaccionPromedio
+                                        <i class="bi bi-star-fill text-warning ms-1"></i>
+                                    </span>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="text-muted small">Total Empleados:</span>
+                                    <span class="badge bg-secondary">@area.EmpleadosTotal</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-muted small">Riesgo Promedio:</span>
+                                    <span class="badge bg-@riesgoClass">@area.RiesgoPromedio</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .avatar-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items-center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .nav-tabs .nav-link {
+        color: #6c757d;
+        border: none;
+        border-bottom: 3px solid transparent;
+        font-weight: 500;
+    }
+
+    .nav-tabs .nav-link:hover {
+        color: #dc3545;
+        border-color: transparent;
+    }
+
+    .nav-tabs .nav-link.active {
+        color: #dc3545;
+        background-color: transparent;
+        border-bottom: 3px solid #dc3545;
+    }
+</style>

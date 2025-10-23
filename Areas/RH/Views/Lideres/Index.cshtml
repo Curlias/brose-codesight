@@ -1,0 +1,250 @@
+@{
+    ViewData["Title"] = "Gestión de Líderes";
+}
+
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="fw-bold mb-1">
+                <i class="bi bi-person-badge text-danger me-2"></i>
+                Gestión de Líderes
+            </h2>
+            <p class="text-muted mb-0">Administración y seguimiento del desempeño de líderes</p>
+        </div>
+    </div>
+
+    <!-- KPIs Principales -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="rounded-circle bg-danger bg-opacity-10 p-3">
+                                <i class="bi bi-people-fill text-danger fs-4"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-muted small mb-1">Total Líderes</h6>
+                            <h3 class="mb-0 fw-bold">@ViewBag.TotalLideres</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="rounded-circle bg-success bg-opacity-10 p-3">
+                                <i class="bi bi-graph-up-arrow text-success fs-4"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-muted small mb-1">Progreso Promedio</h6>
+                            <h3 class="mb-0 fw-bold">89.2%</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="rounded-circle bg-warning bg-opacity-10 p-3">
+                                <i class="bi bi-star-fill text-warning fs-4"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-muted small mb-1">Satisfacción</h6>
+                            <h3 class="mb-0 fw-bold">4.6/5.0</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="rounded-circle bg-info bg-opacity-10 p-3">
+                                <i class="bi bi-people text-info fs-4"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-muted small mb-1">Empleados Total</h6>
+                            <h3 class="mb-0 fw-bold">67</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold text-muted">Planta</label>
+                            <select class="form-select" id="filterPlanta">
+                                @foreach (var planta in ViewBag.Plantas)
+                                {
+                                    <option>@planta</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold text-muted">Área</label>
+                            <select class="form-select" id="filterArea">
+                                @foreach (var area in ViewBag.Areas)
+                                {
+                                    <option>@area</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold text-muted">Buscar</label>
+                            <input type="text" class="form-control" id="searchInput" placeholder="Buscar por nombre...">
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-outline-danger w-100" onclick="clearFilters()">
+                                <i class="bi bi-x-circle me-1"></i>
+                                Limpiar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de Líderes -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Líder</th>
+                                    <th>Puesto</th>
+                                    <th>Área</th>
+                                    <th>Planta</th>
+                                    <th class="text-center">Empleados</th>
+                                    <th class="text-center">Progreso Prom.</th>
+                                    <th class="text-center">Satisfacción</th>
+                                    <th class="text-center">Riesgo</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lideresTable">
+                                @foreach (var lider in ViewBag.Lideres)
+                                {
+                                    var riesgoClass = lider.RiesgoPromedio == "Bajo" ? "success" : (lider.RiesgoPromedio == "Medio" ? "warning" : "danger");
+                                    var progresoColor = lider.ProgresoPromedio >= 90 ? "success" : (lider.ProgresoPromedio >= 75 ? "info" : "warning");
+                                    
+                                    <tr data-nombre="@lider.Nombre" data-area="@lider.Area" data-planta="@lider.Planta">
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-circle bg-danger text-white me-2">
+                                                    @lider.Nombre.Substring(0, 1)
+                                                </div>
+                                                <div>
+                                                    <strong>@lider.Nombre</strong>
+                                                    <br><small class="text-muted">@lider.Email</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>@lider.Puesto</td>
+                                        <td><span class="badge bg-primary">@lider.Area</span></td>
+                                        <td>@lider.Planta</td>
+                                        <td class="text-center">
+                                            <span class="badge bg-secondary">@lider.EmpleadosACargo</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="progress" style="height: 20px; width: 80px; margin: 0 auto;">
+                                                <div class="progress-bar bg-@progresoColor" role="progressbar" style="width: @lider.ProgresoPromedio%">
+                                                    @lider.ProgresoPromedio%
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="fw-bold">@lider.SatisfaccionPromedio</span>
+                                            <i class="bi bi-star-fill text-warning ms-1"></i>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge bg-@riesgoClass">@lider.RiesgoPromedio</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <button class="btn btn-sm btn-outline-danger me-1" title="Ver detalles">
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-secondary" title="Editar">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .avatar-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 18px;
+    }
+</style>
+
+<script>
+    function clearFilters() {
+        document.getElementById('filterPlanta').selectedIndex = 0;
+        document.getElementById('filterArea').selectedIndex = 0;
+        document.getElementById('searchInput').value = '';
+        filterLideres();
+    }
+
+    function filterLideres() {
+        const planta = document.getElementById('filterPlanta').value;
+        const area = document.getElementById('filterArea').value;
+        const search = document.getElementById('searchInput').value.toLowerCase();
+
+        const rows = document.querySelectorAll('#lideresTable tr');
+        
+        rows.forEach(row => {
+            const nombre = row.dataset.nombre.toLowerCase();
+            const rowArea = row.dataset.area;
+            const rowPlanta = row.dataset.planta;
+
+            const matchPlanta = planta === 'Todas' || rowPlanta === planta;
+            const matchArea = area === 'Todas' || rowArea === area;
+            const matchSearch = nombre.includes(search);
+
+            row.style.display = (matchPlanta && matchArea && matchSearch) ? '' : 'none';
+        });
+    }
+
+    document.getElementById('filterPlanta').addEventListener('change', filterLideres);
+    document.getElementById('filterArea').addEventListener('change', filterLideres);
+    document.getElementById('searchInput').addEventListener('input', filterLideres);
+</script>
